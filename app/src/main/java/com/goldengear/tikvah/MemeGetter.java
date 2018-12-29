@@ -1,0 +1,138 @@
+package com.goldengear.tikvah;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
+import android.view.View;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
+
+/**
+ * Created by Aaron Ayalew on 11/27/2018.
+ */
+
+public class MemeGetter extends AsyncTask<String,Void,String>{
+    public Context ctx;
+    public String category;
+    ListView lv;
+    ActionBar ab;
+    View rootView;
+    String ResultHolder;
+    SwipeRefreshLayout srl;
+    DBHelper helper;
+    boolean newNews;
+    Activity app;
+    public MemeGetter(Context context, String param, ListView list, View rootV, SwipeRefreshLayout srl, Activity app){
+        this.ctx = context;
+        this.category = param;
+        this.lv = list;
+        this.rootView = rootV;
+        this.srl = srl;
+        this.app = app;
+    }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        helper = new DBHelper(ctx,category);
+        srl.setRefreshing(true);
+    }
+    @Override
+    protected String doInBackground(String... strings) {
+        try {
+            String link = new TikConst().getURL() + "get_memes.php";
+            final URL url = new URL(link);
+            final StringBuilder sb = new StringBuilder();
+
+                    try {
+                        Log.d("Thread Meme", "Thread Running");
+                        URLConnection conn = url.openConnection();
+                        Log.d("Thread Meme", "opened connection");
+                        conn.setDoOutput(true);
+                        conn.setConnectTimeout(60000);
+
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        Log.d("Thread Meme", "Input Stream Loaded");
+                        String line = null;
+                        while ((line = reader.readLine()) != null) {
+                            sb.append(line);
+                            break;
+                        }
+                        Log.d("Thread Meme", "Done:" + sb.toString());
+                    } catch (Exception ex) {
+                        Log.d("ERROR Meme", ex.toString());
+                        srl.setRefreshing(false);
+                        Snackbar.make(rootView, "Couldn't Connect", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                               MemeGetter mg = new MemeGetter(ctx, category, lv, rootView, srl, app);
+                                mg.execute();
+                            }
+                        }).show();
+                    }
+
+            newNews = true;
+            return sb.toString();
+        } catch (Exception e) {
+            Log.d("Error", e.toString());
+            return e.getMessage();
+    }
+
+
+}
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+        Log.d("Result", s);
+        try {
+            JSONObject object = new JSONObject(s);
+            String arrStr = object.optString("android");
+            Log.d("JSON", "arrstr = " + arrStr);
+            JSONArray arr = object.getJSONArray("android");
+            Log.d("JSON", "Opted out JSONArray");
+            int length = arr.length();
+            String[] IDs = new String[length];
+            String[] images = new String[length];
+            String[] dates = new String[length];
+            String[] provider_ids = new String[length];
+            String[] logos = new String[length];
+            String[] provider_names = new String[length];
+            String[] texts = new String[length];
+            Log.d("JSON", "Gotten Length" + String.valueOf(length));
+            for(int i = 0; i < length; i++) {
+                JSONObject item = arr.optJSONObject(i);
+                Log.d("JSON", "loop: " + String.valueOf(i));
+                IDs[i] = item.getString("ID");
+                images[i] = item.getString("image");
+                dates[i] = item.getString("date");
+                provider_ids[i] = item.getString("provider_id");
+                provider_names[i] = item.getString("provider_name");
+                logos[i] = item.getString("provider_image");
+                texts[i] = item.getString("text");
+
+            }
+            MemeAdapter adapter = new MemeAdapter(ctx,IDs,images,dates,provider_ids,provider_names,logos,texts,app);
+            lv.setAdapter(adapter);
+            srl.setRefreshing(false);
+        } catch (Exception ex) {
+            Log.d("JSON",ex.toString());
+        }
+
+
+    }
+
+}
+

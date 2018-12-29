@@ -1,0 +1,96 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.goldengear.tikvah.StartScreen"
+    android:background="#2d7e9b"
+    >
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/cpyRight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Golden Gear © 2018"
+                android:textAlignment="center"
+                android:textColor="#fff"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="243dp"
+                android:layout_below="@+id/cpyRight"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:padding="25dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/abc" />
+
+                 />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:layout_below="@+id/imageView2"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="244dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/golden" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/imageView2"
+                android:layout_marginTop="63dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/collab" />
+
+
+            <Button
+                android:id="@+id/startBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_weight="1"
+                android:background="#FF266880"
+                android:text="Start"
+                android:textColor="#fff" />
+        </RelativeLayout>
+
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/fullscreen_content_controls"
+        style="?metaButtonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:background="@color/black_overlay"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+
+    </LinearLayout>
+
+</FrameLayout>

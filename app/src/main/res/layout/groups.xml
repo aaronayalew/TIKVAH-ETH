@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ccc"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UEFA Leagues"
+            android:textSize="24sp"/>
+
+    <ImageButton
+        android:foregroundGravity="right"
+        android:scaleType="fitEnd"
+        android:backgroundTint="#ccc"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:clickable="false"
+        android:layout_gravity="end"
+        app:srcCompat="@drawable/lgexpand" />
+</LinearLayout>

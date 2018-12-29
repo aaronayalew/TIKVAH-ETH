@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "770796126644",
+    "firebase_url": "https://tikvah-b061f.firebaseio.com",
+    "project_id": "tikvah-b061f",
+    "storage_bucket": "tikvah-b061f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770796126644:android:85810af4287283dd",
+        "android_client_info": {
+          "package_name": "com.goldengear.tikvah"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770796126644-tafh89bhdc0hs6eb48kmmoa2bv150khc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi5qoHKnLOnnTJz_vMJUOhGbDKdZm3cy8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      },
+      "admob_app_id": "ca-app-pub-8089746021276960~9698421771"
+    }
+  ],
+  "configuration_version": "1"
+}

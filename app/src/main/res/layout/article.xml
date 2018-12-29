@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0dp"
+    android:background="#efefef"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:orientation="vertical"
+        android:padding="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginLeft="0dp"
+
+        android:background="#ffffff">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:layout_gravity="end"
+            android:text="December 22, 2018"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:textColor="#aaa"
+            android:layout_marginRight="8dp"
+            android:id = "@+id/artTime"/>
+
+        <ImageView
+            android:id="@+id/artImg"
+            android:layout_width="match_parent"
+            android:layout_height="227dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+
+            />
+
+        <TextView
+            android:id="@+id/artTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
+            android:text="Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum"
+            android:textAlignment="center"
+            android:textColor="#000"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/artDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit"
+            android:layout_marginLeft="8dp"
+            android:textSize="18sp"
+            android:textColor="#000"
+            android:textAlignment="textStart"
+            android:layout_gravity="start"
+            android:maxLines="3"
+            android:ellipsize="marquee"/>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/btnExpand"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_gravity="end"
+            android:layout_marginBottom="15dp"
+            android:scaleType="fitCenter"
+            android:layout_marginRight="15dp"
+            android:clickable="true"
+            app:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/expand" />
+
+    </LinearLayout>
+
+</FrameLayout>

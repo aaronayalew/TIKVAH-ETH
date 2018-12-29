@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="#efefef"
+  >
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+        android:background="#eee"
+        android:id="@+id/lnlTopPanel">
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtCurrRates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:textColor="#222"
+                android:text="1 US Dollar = "
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtDolVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:text="Wait..."
+                android:textColor="#555"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="2dp"
+                android:textColor="#222"
+                android:text="1 Euro = "
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtEurVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:text="Wait..."
+                android:textColor="#555"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtPndVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="1"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="1"
+                android:text="Wait..."
+                android:textColor="#555"
+                android:textSize="12sp" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="1"
+                android:layout_weight="1"
+                android:textColor="#222"
+                android:text="1 GB Pound = "
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="2"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="1"
+                android:layout_weight="1"
+                android:textColor="#222"
+                android:text="1 Yuan = "
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtRmbVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="3"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="1"
+                android:text="Wait..."
+                android:textColor="#555"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="0"
+                android:textColor="#222"
+                android:text="1 Dirham = "
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtDirVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="0"
+                android:text="Wait..."
+                android:textColor="#555"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="4"
+                android:layout_marginBottom="2dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="1"
+                android:textColor="#222"
+                android:text="1 Dinar = "
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/txtDinVal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="5"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp"
+                android:layout_row="1"
+                android:text="Wait..."
+                android:textColor="#555"
+                android:textSize="12sp" />
+
+        </GridLayout>
+
+        <ImageButton
+            android:id="@+id/btnConvert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_column="6"
+            android:layout_row="0"
+            android:layout_weight="1"
+            android:backgroundTint="#ccc"
+            app:srcCompat="@drawable/ic_convert" />
+
+    </LinearLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="?attr/actionBarSize"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/lnlBus"
+        android:background="#ffffff">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lstBus"
+        />
+    </android.support.v4.widget.SwipeRefreshLayout>
+</LinearLayout>
