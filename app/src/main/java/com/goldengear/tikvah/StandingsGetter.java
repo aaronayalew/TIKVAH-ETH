@@ -3,9 +3,13 @@ package com.goldengear.tikvah;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,11 +32,15 @@ public class StandingsGetter extends AsyncTask<String,Void,String> {
     ListView lv;
     Activity app;
     Context ctx;
-    public StandingsGetter(Context context, ListView listView, Activity app) {
+    SwipeRefreshLayout srl;
+    View rootView;
+    public StandingsGetter(Context context, ListView listView, Activity app, SwipeRefreshLayout swipeRefreshLayout, View rootView) {
         super();
         this.ctx = context;
         this.lv = listView;
         this.app = app;
+        this.srl = swipeRefreshLayout;
+        this.rootView = rootView;
     }
 
     @Override
@@ -63,6 +71,8 @@ public class StandingsGetter extends AsyncTask<String,Void,String> {
             return null;
         } catch (Exception ex){
             Log.d("Threadst", "Error: " + ex.getMessage());
+            srl.setRefreshing(false);
+            Snackbar.make(srl,"Error while getting data",Snackbar.LENGTH_LONG);
         }
         return null;
 
@@ -107,7 +117,7 @@ public class StandingsGetter extends AsyncTask<String,Void,String> {
                 GAs[place] = object.optInt("overall_league_GA");
                 Log.d("Standings", "loop: " + String.valueOf(i));
             }
-
+            srl.setRefreshing(false);
             StandingsAdapter adapter = new StandingsAdapter(ctx,positions,names,Pts,Ps,Ws,Ds,Ls,GFs,GAs,app);
             lv.setAdapter(adapter);
 

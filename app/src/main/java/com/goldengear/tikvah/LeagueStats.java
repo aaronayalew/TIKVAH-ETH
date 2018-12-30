@@ -20,6 +20,7 @@ import android.content.Context;
 import android.support.v7.widget.ThemedSpinnerAdapter;
 import android.content.res.Resources.Theme;
 
+import android.widget.Switch;
 import android.widget.TextView;
 
 public class LeagueStats extends AppCompatActivity {
@@ -37,8 +38,8 @@ public class LeagueStats extends AppCompatActivity {
         spinner.setAdapter(new MyAdapter(
                 toolbar.getContext(),
                 new String[]{
-                        "Standings",
                         "Games",
+                        "Standings",
                         "Other",
                 }
                 )
@@ -46,15 +47,25 @@ public class LeagueStats extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // When the given dropdown item is selected, show its contents in the
-                // container view.
-                FragStandings fs = new FragStandings();
                 Bundle args = new Bundle();
                 args.putInt("league_id",Id);
-                fs.setArguments(args);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fs)
-                        .commit();
+                switch(position) {
+                    case 0 :
+                        FragGames fg = new FragGames();
+                        fg.setArguments(args);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, fg)
+                                .commit();
+                        break;
+                    case 1 :
+                        FragStandings fs = new FragStandings();
+                        fs.setArguments(args);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.container, fs)
+                                .commit();
+                        break;
+                }
+
             }
 
             @Override

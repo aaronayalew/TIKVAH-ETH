@@ -3,9 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.goldengear.tikvah.FragGames">
-
-    <ListView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lstGames"/>
+        android:id="@+id/srlGames">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lstGames"
+            android:layout_marginBottom="?attr/actionBarSize"/>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>

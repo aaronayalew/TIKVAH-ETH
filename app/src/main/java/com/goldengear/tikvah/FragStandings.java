@@ -3,9 +3,11 @@ package com.goldengear.tikvah;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -27,7 +29,10 @@ public class FragStandings extends Fragment {
         String[] test = new String[1];
         int[] test2 = new int[1];
         int Id = getArguments().getInt("league_id");
-        StandingsGetter sg = new StandingsGetter(getContext(),standings,getActivity());
+        SwipeRefreshLayout srl = (SwipeRefreshLayout) result.findViewById(R.id.srlStand);
+        srl.setRefreshing(true);
+        View view = result.findViewById(R.id.lnlStandings);
+        StandingsGetter sg = new StandingsGetter(getContext(),standings,getActivity(),srl,view);
         sg.execute(String.valueOf(Id));
         return result;
     }

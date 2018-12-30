@@ -3,9 +3,11 @@ package com.goldengear.tikvah;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 
 /**
@@ -23,7 +25,13 @@ public class FragGames extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.frag_games, container, false);
+        View result =  inflater.inflate(R.layout.frag_games, container, false);
+        ListView lv = result.findViewById(R.id.lstGames);
+        int Id = getArguments().getInt("league_id");
+        SwipeRefreshLayout srl = result.findViewById(R.id.srlGames);
+        GamesGetter gamesGetter = new GamesGetter(getContext(),lv,getActivity(),srl,srl);
+        gamesGetter.execute(String.valueOf(Id));
+        return result;
     }
 
 }

@@ -67,12 +67,12 @@ public class FragHome extends Fragment {
         Log.d("DateConv","Today(formatted) is: " + tod);
         String amh = calendarForAaron.convertToECString(day,month,year);
         amDate.setText("ዛሬ ቀኑ：" + amh + "ነው");
-        NewsGetter ng = new NewsGetter(getContext(),"general",lv,rootView,srl,getActivity());
+        NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,getActivity());
         ng.execute();
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NewsGetter ng = new NewsGetter(getContext(),"general",lv,rootView,srl,getActivity());
+                NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,getActivity());
                 ng.execute();
             }
         });
