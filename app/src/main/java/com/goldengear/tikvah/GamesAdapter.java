@@ -39,31 +39,34 @@ public class GamesAdapter extends ArrayAdapter {
         this.app = app;
     }
     static class  ViewHolder {
-        TextView date, stat, hname, aname, hscore, ascore;
+        TextView time, stat, hname, aname, hscore, ascore;
     }
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = app.getLayoutInflater();
-        if (convertView == null || convertView.getTag() == null) {
-            ViewHolder holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.game, parent, false);
-            holder.date = convertView.findViewById(R.id.txtMatchDate);
-            holder.stat = convertView.findViewById(R.id.txtMatchStat);
-            holder.hname = convertView.findViewById(R.id.txtHomeName);
-            holder.aname = convertView.findViewById(R.id.txtAwayName);
-            holder.hscore = convertView.findViewById(R.id.txtMatchHomeScore);
-            holder.ascore = convertView.findViewById(R.id.txtAwayScore);
-            convertView.setTag(holder);
+        if(dates[position].contains("Today") || dates[position].contains("Yesterday") || dates[position].contains("Tomorrow")) {
+            convertView = inflater.inflate(R.layout.games_header,parent,false);
+            TextView daate = convertView.findViewById(R.id.txtMatchDate);
+            daate.setText(dates[position]);
+        } else {
+            if (convertView == null || convertView.getTag() == null) {
+                ViewHolder holder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.game, parent, false);
+                holder.time = convertView.findViewById(R.id.txtMatchTime);
+                holder.hname = convertView.findViewById(R.id.txtHomeName);
+                holder.aname = convertView.findViewById(R.id.txtAwayName);
+                holder.hscore = convertView.findViewById(R.id.txtMatchHomeScore);
+                holder.ascore = convertView.findViewById(R.id.txtAwayScore);
+                convertView.setTag(holder);
+            }
+            ViewHolder holder = (ViewHolder) convertView.getTag();
+            holder.time.setText(times[position]);
+            holder.hname.setText(homenames[position]);
+            holder.aname.setText(awaynames[position]);
+            holder.hscore.setText(String.valueOf(homescores[position]));
+            holder.ascore.setText(String.valueOf(awayscores[position]));
         }
-        ViewHolder holder = (ViewHolder) convertView.getTag();
-        holder.date.setText(dates[position] + "  " + times[position]);
-        holder.stat.setText(statuses[position]);
-        holder.hname.setText(homenames[position]);
-        holder.aname.setText(awaynames[position]);
-        holder.hscore.setText(String.valueOf(homescores[position]));
-        holder.ascore.setText(String.valueOf(awayscores[position]));
-
 
         return convertView;
     }

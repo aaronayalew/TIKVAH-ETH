@@ -13,10 +13,12 @@
         <item name="android:colorBackground">@color/background_material_light</item>
         <item name="android:textColorSecondaryInverse">@color/colorAccent</item>
     </style>
+
     <style name="AppTheme.Spinner">
         <item name="android:textColor">#fff</item>
         <item name="android:textColorPrimary">#fff</item>
     </style>
+
     <style name="AppTheme.Launcher">
         <item name="android:windowBackground">@drawable/launch_screen</item>
     </style>

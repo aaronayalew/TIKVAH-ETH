@@ -21,4 +21,8 @@ To change the overall look of your document, choose new Theme elements on the Pa
     <string name="title_activity_league_stats">LeagueStats</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_game_info">GameInfo</string>
+    <string name="tab_text_1">Stats</string>
+    <string name="tab_text_2">Game Plan</string>
+    <string name="tab_text_3">Previous matches</string>
 </resources>

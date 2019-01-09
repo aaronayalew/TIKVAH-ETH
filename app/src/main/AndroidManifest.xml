@@ -55,7 +55,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:noHistory="true"
-            android:theme="@style/FullscreenTheme"/>
+            android:theme="@style/FullscreenTheme" />
         <activity android:name=".Convertor" />
         <activity
             android:name=".LeagueStats"
@@ -65,6 +65,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.goldengear.tikvah.MainActivity" />
+        </activity>
+        <activity
+            android:name=".GameInfo"
+            android:label="@string/title_activity_game_info"
+            android:parentActivityName=".LeagueStats"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.goldengear.tikvah.LeagueStats" />
         </activity>
     </application>
 
