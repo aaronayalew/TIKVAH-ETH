@@ -66,6 +66,11 @@ public class FragBusiness extends Fragment {
         lv.animate();
         Log.d("Aaron", "Adapter Set, Returning inflated View");
         final SwipeRefreshLayout rootView = result.findViewById(R.id.lnlBus);
+        DBHelper helper = new DBHelper(getContext(),"newsDB");
+        JSONObject object = helper.getNews("business",0,20);
+
+        JSONHelper jsonHelper = new JSONHelper(getContext(),lv,rootView,getActivity());
+        jsonHelper.refreshListView(object,false,"business");
         NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"business",lv,rootView,rootView,getActivity());
         ng.execute();
         rootView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

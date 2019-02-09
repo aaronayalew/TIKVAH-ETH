@@ -85,7 +85,6 @@ public class MemeAdapter extends ArrayAdapter {
             holder.logo.setImageBitmap(bm);
         } else {
             downloader1.execute(new TikConst().getURL() + "img/prov/" + provider_images[position], provider_images[position]);
-            DWImage downloader2 = new DWImage(holder.meme);
         }
         if (new File(cachDir.getAbsolutePath() + "/" + images[position]).exists()) {
             Bitmap bm = BitmapFactory.decodeFile(cachDir.getAbsolutePath() + "/" + images[position]);

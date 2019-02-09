@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by Aaron Ayalew on 12/30/2018.
@@ -24,8 +28,9 @@ public class GamesAdapter extends ArrayAdapter {
     String[] awaynames;
     int[] awayscores;
     int[] isLives;
+    JSONArray details;
     Activity app;
-    GamesAdapter(@NonNull Context context, int[] ids, String[] dates, String[] times, String[] statuses, String[] homenames, int[] homescores, String[] awaynames, int[] awayscores, int[] isLives,Activity app) {
+    GamesAdapter(@NonNull Context context, int[] ids, String[] dates, String[] times, String[] statuses, String[] homenames, int[] homescores, String[] awaynames, int[] awayscores, int[] isLives, JSONArray details,Activity app) {
         super(context, R.layout.game, R.id.txtHomeName,homenames);
         this.ids = ids;
         this.dates = dates;
@@ -36,6 +41,7 @@ public class GamesAdapter extends ArrayAdapter {
         this.awaynames = awaynames;
         this.awayscores = awayscores;
         this.isLives = isLives;
+        this.details = details;
         this.app = app;
     }
     static class  ViewHolder {
@@ -45,7 +51,7 @@ public class GamesAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = app.getLayoutInflater();
-        if(dates[position].contains("Today") || dates[position].contains("Yesterday") || dates[position].contains("Tomorrow")) {
+        if(!isGame(position)) {
             convertView = inflater.inflate(R.layout.games_header,parent,false);
             TextView daate = convertView.findViewById(R.id.txtMatchDate);
             daate.setText(dates[position]);
@@ -62,12 +68,29 @@ public class GamesAdapter extends ArrayAdapter {
             }
             ViewHolder holder = (ViewHolder) convertView.getTag();
             holder.time.setText(times[position]);
-            holder.hname.setText(homenames[position]);
-            holder.aname.setText(awaynames[position]);
+            holder.hname.setText(homenames[position].replace("&amp;", "&"));
+            holder.aname.setText(awaynames[position].replace("&amp;", "&"));
             holder.hscore.setText(String.valueOf(homescores[position]));
             holder.ascore.setText(String.valueOf(awayscores[position]));
         }
 
         return convertView;
     }
+
+    public boolean isGame(int pos) {
+        if(dates[pos].contains("Today") || dates[pos].contains("Yesterday") || dates[pos].contains("Tomorrow")) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public JSONObject getDetails(int pos) {
+        try {
+            return details.getJSONObject(pos);
+        } catch (Exception ex){
+            Log.d("Threadgames", "An error occured while trying to obtaining Details from json array. Error: " + ex.getMessage() );
+            return null;
+        }
+    }
 }
+

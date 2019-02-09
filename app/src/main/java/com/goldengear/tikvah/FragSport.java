@@ -45,6 +45,9 @@ public class FragSport extends Fragment {
         lv.animate();
         Log.d("Aaron", "Adapter Set, Returning inflated View");
         final SwipeRefreshLayout rootView = result.findViewById(R.id.lnlSport);
+        DBHelper helper = new DBHelper(getContext(),"newsDB");
+        JSONObject object = helper.getNews("sport",0,20);
+        new JSONHelper(getContext(),lv,rootView,getActivity()).refreshListView(object,false,"sport");
         NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"sport",lv,rootView,rootView,getActivity());
         ng.execute();
 

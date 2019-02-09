@@ -71,7 +71,7 @@ public class StandingsAdapter extends ArrayAdapter {
             }
             ViewHolder holder = (ViewHolder) convertView.getTag();
             holder.pos.setText(String.valueOf(Poss[position]));
-            holder.name.setText(names[position]);
+            holder.name.setText(names[position].replace("&amp;", "&"));
             holder.pts.setText(String.valueOf(Pts[position]));
             holder.p.setText(String.valueOf(Ps[position]));
             holder.w.setText(String.valueOf(Ws[position]));

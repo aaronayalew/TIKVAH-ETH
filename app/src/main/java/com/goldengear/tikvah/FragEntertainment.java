@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 /**
  * Created by Aaron Ayalew on 10/18/2018.
  */
@@ -31,6 +33,10 @@ public class FragEntertainment extends Fragment {
         lv.animate();
         Log.d("Aaron", "Adapter Set, Returning inflated View");
         swipeLayout = result.findViewById(R.id.lnlEnt);
+        DBHelper helper = new DBHelper(getContext(),"memeDB");
+        JSONObject object = helper.getMeme(0,20);
+        JSONHelper jsonHelper = new JSONHelper(getContext(),lv,swipeLayout,getActivity());
+        jsonHelper.refreshMemeListView(object);
         MemeGetter ng = new MemeGetter(getActivity().getApplicationContext(),"entertainment",lv,swipeLayout,swipeLayout,getActivity());
         ng.execute();
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

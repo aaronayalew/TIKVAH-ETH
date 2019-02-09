@@ -26,6 +26,8 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 
 
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,13 +44,7 @@ public class FragHome extends Fragment {
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        /*Button btn = (Button) getActivity().findViewById(R.id.testbtn);*/
-        /*btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity().getApplicationContext(), NewsView.class));
-            }
-        });*/
+
         Log.d("Aaron", "OnCreateView for FragHome is called");
         View result = inflater.inflate(R.layout.frag_home,container,false);
         final ListView lv = (ListView) result.findViewById(R.id.lstHome);
@@ -66,7 +62,14 @@ public class FragHome extends Fragment {
         int day = Integer.valueOf(tod.substring(8,10));
         Log.d("DateConv","Today(formatted) is: " + tod);
         String amh = calendarForAaron.convertToECString(day,month,year);
-        amDate.setText("ዛሬ ቀኑ：" + amh + "ነው");
+        amDate.setText("ዛሬ ቀኑ：" + amh);
+        helper = new DBHelper(getContext(),"newsDB");
+        Log.d("DBHelper", "No of rows - " + helper.numberOfRows());
+        if(helper.numberOfRows() > 0) {
+            JSONObject jsonObject = helper.getNews("general",0,20);
+            JSONHelper jsonHelper = new JSONHelper(getContext(),lv,srl,getActivity());
+            jsonHelper.refreshListView(jsonObject,false,"general");
+        }
         NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,getActivity());
         ng.execute();
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

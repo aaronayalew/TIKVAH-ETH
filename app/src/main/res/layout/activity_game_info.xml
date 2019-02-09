@@ -21,7 +21,7 @@
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollFlags="scroll"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:title="@string/app_name">
 
@@ -55,6 +55,7 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
+        android:scrollbars="vertical|horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />

@@ -97,41 +97,8 @@ public class MemeGetter extends AsyncTask<String,Void,String>{
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         Log.d("Result", s);
-        try {
-            JSONObject object = new JSONObject(s);
-            String arrStr = object.optString("android");
-            Log.d("JSON", "arrstr = " + arrStr);
-            JSONArray arr = object.getJSONArray("android");
-            Log.d("JSON", "Opted out JSONArray");
-            int length = arr.length();
-            String[] IDs = new String[length];
-            String[] images = new String[length];
-            String[] dates = new String[length];
-            String[] provider_ids = new String[length];
-            String[] logos = new String[length];
-            String[] provider_names = new String[length];
-            String[] texts = new String[length];
-            Log.d("JSON", "Gotten Length" + String.valueOf(length));
-            for(int i = 0; i < length; i++) {
-                JSONObject item = arr.optJSONObject(i);
-                Log.d("JSON", "loop: " + String.valueOf(i));
-                IDs[i] = item.getString("ID");
-                images[i] = item.getString("image");
-                dates[i] = item.getString("date");
-                provider_ids[i] = item.getString("provider_id");
-                provider_names[i] = item.getString("provider_name");
-                logos[i] = item.getString("provider_image");
-                texts[i] = item.getString("text");
-
-            }
-            MemeAdapter adapter = new MemeAdapter(ctx,IDs,images,dates,provider_ids,provider_names,logos,texts,app);
-            lv.setAdapter(adapter);
-            srl.setRefreshing(false);
-        } catch (Exception ex) {
-            Log.d("JSON",ex.toString());
-        }
-
-
+        JSONHelper helper = new JSONHelper(ctx,lv,srl,app);
+        helper.refreshMemeListView(s);
     }
 
 }

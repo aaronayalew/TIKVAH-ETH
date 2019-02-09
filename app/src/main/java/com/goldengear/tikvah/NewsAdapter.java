@@ -18,6 +18,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -63,7 +65,7 @@ public class NewsAdapter extends ArrayAdapter {
         TextView desc;
         ImageView img;
         TextView time;
-        FloatingActionButton expand;
+        ImageButton expand;
         boolean isExpanded;
 
     }
@@ -71,7 +73,7 @@ public class NewsAdapter extends ArrayAdapter {
         TextView title;
         TextView desc;
         TextView time;
-        FloatingActionButton expand;
+        ImageButton expand;
         boolean isExpanded;
     }
 
@@ -88,7 +90,7 @@ public class NewsAdapter extends ArrayAdapter {
                 holder.desc = (TextView) convertView.findViewById(R.id.artDesc);
                 holder.img = (ImageView) convertView.findViewById(R.id.artImg);
                 holder.time = (TextView) convertView.findViewById(R.id.artTime);
-                holder.expand = (FloatingActionButton) convertView.findViewById(R.id.btnExpand);
+                holder.expand = (ImageButton) convertView.findViewById(R.id.btnExpand);
                 if(isExpandeds[position].contains("false")) {
                     holder.isExpanded = false;
                 } else {
@@ -103,7 +105,7 @@ public class NewsAdapter extends ArrayAdapter {
                 Thread runn = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        holder.expand.setImageResource(R.drawable.ic_collapse);
+                        holder.expand.setImageResource(R.drawable.collapse);
                     }
                 });
                 runn.run();
@@ -112,7 +114,7 @@ public class NewsAdapter extends ArrayAdapter {
                 Thread runn = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        holder.expand.setImageResource(R.drawable.ic_expand);
+                        holder.expand.setImageResource(R.drawable.expand);
                     }
                 });
                 runn.run();
@@ -244,7 +246,7 @@ public class NewsAdapter extends ArrayAdapter {
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                holder.expand.setImageResource(R.drawable.ic_collapse);
+                                holder.expand.setImageResource(R.drawable.collapse);
                             }
                         });
                         changer.run();
@@ -255,7 +257,7 @@ public class NewsAdapter extends ArrayAdapter {
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                holder.expand.setImageResource(R.drawable.ic_collapse);
+                                holder.expand.setImageResource(R.drawable.expand);
                             }
                         });
                         changer.run();
@@ -271,7 +273,7 @@ public class NewsAdapter extends ArrayAdapter {
                 holder.title = (TextView) convertView.findViewById(R.id.artTitleNoImg);
                 holder.desc = (TextView) convertView.findViewById(R.id.artDescNoImg);
                 holder.time = (TextView) convertView.findViewById(R.id.artTimeNoImg);
-                holder.expand = (FloatingActionButton) convertView.findViewById(R.id.btnExpandNoImg);
+                holder.expand = (ImageButton) convertView.findViewById(R.id.btnExpandNoImg);
                 holder.isExpanded = false;
                 convertView.setTag(holder);
                 Log.d("Logger", "convertView is null");
@@ -282,7 +284,7 @@ public class NewsAdapter extends ArrayAdapter {
                 Thread runn = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        holder.expand.setImageResource(R.drawable.ic_collapse);
+                        holder.expand.setImageResource(R.drawable.collapse);
                     }
                 });
                 runn.run();
@@ -291,7 +293,7 @@ public class NewsAdapter extends ArrayAdapter {
                 Thread runn = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        holder.expand.setImageResource(R.drawable.ic_expand);
+                        holder.expand.setImageResource(R.drawable.expand);
                     }
                 });
                 runn.run();
@@ -407,7 +409,7 @@ public class NewsAdapter extends ArrayAdapter {
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                holder.expand.setImageResource(R.drawable.ic_collapse);
+                                holder.expand.setImageResource(R.drawable.collapse);
                             }
                         });
                         changer.run();
@@ -418,7 +420,7 @@ public class NewsAdapter extends ArrayAdapter {
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                holder.expand.setImageResource(R.drawable.ic_collapse);
+                                holder.expand.setImageResource(R.drawable.expand);
                             }
                         });
                         changer.run();

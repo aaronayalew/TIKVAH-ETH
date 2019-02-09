@@ -41,6 +41,7 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
     DBHelper helper;
     boolean newNews;
     Activity app;
+    Boolean success = true;
 
     public NewsGetter(Context context, String param, ListView list, View rootV, SwipeRefreshLayout srl, Activity app){
         this.ctx = context;
@@ -54,8 +55,8 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        helper = new DBHelper(ctx,category);
         srl.setRefreshing(true);
+        helper = new DBHelper(ctx,"newsDB");
 
     }
 
@@ -96,13 +97,14 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
                         } catch (Exception ex) {
                             Log.d("ERROR" + cat, ex.toString());
                             srl.setRefreshing(false);
-                            Snackbar.make(rootView, "Couldn't Connect", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+                            success = false;
+                           /* Snackbar.make(rootView, "Couldn't Connect", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     NewsGetter ng = new NewsGetter(ctx, category, lv, rootView, srl,app);
                                     ng.execute();
                                 }
-                            }).show();
+                            }).show();*/
                         }
                     }
                 });
@@ -122,8 +124,7 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
         super.onPostExecute(s);
         Log.d("Result", s);
         JSONHelper helper = new JSONHelper(ctx,lv,srl,app);
-
-        helper.refreshListView(s,newNews,category);
+        if(success) helper.refreshListView(s,newNews,category);
 
     }
 

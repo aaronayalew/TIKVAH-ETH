@@ -2,10 +2,13 @@ package com.goldengear.tikvah;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.json.JSONArray;
@@ -35,6 +38,8 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
     SwipeRefreshLayout srl;
     View rootView;
     Date today;
+    Boolean success;
+
     public GamesGetter(Context context, ListView listView, Activity app, SwipeRefreshLayout swipeRefreshLayout, View rootView) {
         super();
         this.ctx = context;
@@ -53,6 +58,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... strings) {
         try {
+            success = true;
             String tod = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
             int year = Integer.valueOf(tod.substring(0,4));
             int month = Integer.valueOf(tod.substring(5,7));
@@ -70,7 +76,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 else yesterday = String.valueOf(year) + "-"  + String.valueOf(month - 1) + "-" + String.valueOf(30);
             }
 
-            final String data = URLEncoder.encode("url", "UTF-8") + "=" + URLEncoder.encode("https://apifootball.com/api/?action=get_events&from="  + yesterday + "&to=2" + tomorrow + "&league_id=" + strings[0] + "&APIkey=6b5092e236a9479381743ac4b6718f2934627d820776735bc82de4a32c24169d","UTF-8");
+            final String data = URLEncoder.encode("url", "UTF-8") + "=" + URLEncoder.encode("https://apifootball.com/api/?action=get_events&from=2018-01-20" + "&to=" + tomorrow + "&league_id=" + strings[0] + "&APIkey=6b5092e236a9479381743ac4b6718f2934627d820776735bc82de4a32c24169d","UTF-8");
             Log.d("Threadgames","Data = " + data);
             URL uri = new URL("http://tikvah.xyz/soccer_api_test.php");
             Log.d("Threadgames", "Starting Thread");
@@ -117,6 +123,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             String[] awaynames = new String[l];
             int[] awayscores = new int[l];
             int[] isLives = new int[l];
+            JSONArray details = new JSONArray();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd ");
             String tod = formatter.format(today);
             int year = Integer.valueOf(tod.substring(0,4));
@@ -132,6 +139,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 int monthd = Integer.valueOf(date.substring(5, 7));
                 int dayd = Integer.valueOf(date.substring(8, 10));
                 if (((!lstDate) && yeard == year && monthd == month && dayd == day + 1) || (lstDate && yeard == year && monthd == month + 1 && dayd == 1)) {
+                    details.put(tom,object);
                     ids[tom] = object.optInt("match_id");
                     dates[tom] = object.optString("match_date");
                     times[tom] = object.optString("match_time");
@@ -156,6 +164,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 int monthd = Integer.valueOf(date.substring(5, 7));
                 int dayd = Integer.valueOf(date.substring(8, 10));
                 if (yeard == year && monthd == month && day == dayd) {
+                    details.put(tom,object);
                     ids[tom] = object.optInt("match_id");
                     dates[tom] = object.optString("match_date");
                     times[tom] = object.optString("match_time");
@@ -170,12 +179,28 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 }
             }
             String yesterday;
-            if(day != 1) yesterday = String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day - 1);
-            else {
-                if(month == 2 || month == 4 || month == 6 || month == 8 || month == 9 || month == 11 || month == 1) yesterday = String.valueOf(year) + "-" + String.valueOf(month - 1) + "-31";
-                else if(month == 3 && year % 4 != 0) yesterday = String.valueOf(year) + "-" + String.valueOf(month - 1) + "-" + String.valueOf(28);
-                else if(month == 3 && year % 4 == 0) yesterday = String.valueOf(year) + "-" + String.valueOf(month - 1) + "-" + String.valueOf(29);
-                else yesterday = String.valueOf(year) + "-" + String.valueOf(month - 1) + "-" + String.valueOf(30);
+            int cday,cmonth,cyear;
+            if(day != 1) {
+                cday = day - 1;
+                cmonth = month;
+                cyear = year;
+            } else {
+                if (month == 2 || month == 4 || month == 6 || month == 8 || month == 9 || month == 11 || month == 1) {
+                    cday = 31;
+                    cmonth = month - 1;
+                    cyear = year;
+                } else if (month == 3 && year % 4 != 0) {
+                    cday = 28;
+                    cmonth = month - 1;
+                    cyear = year;
+                } else if (month == 3 && year % 4 == 0) {
+                    cday = 29;
+                    cmonth = month - 1;
+                    cyear = year;
+                } else {
+                    cday = 30;
+                    cmonth = month - 1;
+                    cyear = year;                }
             }
             dates[tom] = "Yesterday";
             Log.d("Threadga", "Tom = " + tom + "At yesterday");
@@ -183,7 +208,13 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             for(int i = 0; i < l - 3;i++ ) {
                 JSONObject object = jsonArray.getJSONObject(i);
                 String date = object.optString("match_date");
-                if (date.contains("2019-01-01")) {
+                int yeard = Integer.valueOf(date.substring(0, 4));
+                int monthd = Integer.valueOf(date.substring(5, 7));
+                int dayd = Integer.valueOf(date.substring(8, 10));
+                Log.d("Threadgames","Date = " + date);
+                //yeard == cyear && monthd == cmonth && dayd == cday
+                if (date.contains("2019-01-20")) {
+                    details.put(tom,object);
                     ids[tom] = object.optInt("match_id");
                     dates[tom] = object.optString("match_date");
                     times[tom] = object.optString("match_time");
@@ -217,8 +248,17 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 awayscoresr[j] = awayscores[j];
                 isLivesr[j] = isLives[j];
             }
-            GamesAdapter adapter = new GamesAdapter(ctx,idsr,datesr,timesr,statusesr,homenamesr,homescoresr,awaynamesr,awayscoresr,isLivesr,app);
+            final GamesAdapter adapter = new GamesAdapter(ctx,idsr,datesr,timesr,statusesr,homenamesr,homescoresr,awaynamesr,awayscoresr,isLivesr,details,app);
             lv.setAdapter(adapter);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(app.getApplicationContext(),GameInfo.class);
+                    JSONObject obj = adapter.getDetails(position);
+                    intent.putExtras(jsonToBundle(obj));
+                    ctx.startActivity(intent);
+                }
+            });
             srl.setRefreshing(false);
         } catch (Exception ex) {
             Log.d("Threadgames", "ERROR: " + ex.toString());
@@ -236,5 +276,52 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             if(day == 30) return true;
             else return false;
         }
+    }
+    private Bundle jsonToBundle(JSONObject jsonObject){
+        try {
+            Bundle bundle = new Bundle();
+            bundle.putString("home_formation", jsonObject.getString("match_hometeam_system"));
+            bundle.putString("away_formation", jsonObject.getString("match_awayteam_system"));
+            JSONArray scores = jsonObject.optJSONArray("goalscorer");
+            int l = scores.length();
+            String[] goal_times = new String[l];
+            String[] homeoraways = new String[l];
+            String[] scorers = new String[l];
+            for(int i = 0; i < l;i++){
+                goal_times[i] = scores.getJSONObject(i).optString("time");
+                if(scores.getJSONObject(i).optString("home_scorer").length() > 1) {
+                    homeoraways[i] = "home";
+                    scorers[i] = scores.getJSONObject(i).optString("home_scorer");
+                } else {
+                    homeoraways[i] = "away";
+                    scorers[i] = scores.getJSONObject(i).optString("away_scorer");
+                }
+
+            }
+            bundle.putStringArray("goal_times",goal_times);
+            bundle.putStringArray("homeoraways",homeoraways);
+            bundle.putStringArray("scorers",scorers);
+            JSONArray array = jsonObject.getJSONArray("statistics");
+            int len = array.length();
+            for(int i = 0; i < len; i++) {
+                JSONObject obj = array.getJSONObject(i);
+                Log.d("Thradgames","Iterating through the statictics json array");
+                bundle.putInt("home_" + obj.optString("type"),obj.optInt("home"));
+                bundle.putInt("away_" + obj.optString("type"),obj.optInt("away"));
+
+            }
+            bundle.putString("match_date",jsonObject.getString("match_date"));
+            bundle.putString("match_status",jsonObject.getString("match_status"));
+            bundle.putString("match_time", jsonObject.getString("match_time"));
+            bundle.putString("home_name",jsonObject.getString("match_hometeam_name"));
+            bundle.putString("away_name",jsonObject.getString("match_awayteam_name"));
+            bundle.putString("home_score",jsonObject.getString("match_hometeam_score"));
+            bundle.putString("away_score",jsonObject.getString("match_awayteam_score"));
+            bundle.putString("isLive", jsonObject.getString("match_live"));
+            return bundle;
+        } catch (Exception ex) {
+            Log.d("Threadga", "Error in json2Bundle: " + ex.toString());
+        }
+        return null;
     }
 }

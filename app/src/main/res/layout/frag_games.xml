@@ -6,11 +6,13 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/srlGames">
+        android:id="@+id/srlGames"
+        android:layout_marginBottom="?attr/actionBarSize"
+        >
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lstGames"
-            android:layout_marginBottom="?attr/actionBarSize"/>
+            />
     </android.support.v4.widget.SwipeRefreshLayout>
 </FrameLayout>
