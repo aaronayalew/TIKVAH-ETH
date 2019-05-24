@@ -180,6 +180,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#dfdfdf"
             android:id="@+id/lstBus"
         />
     </android.support.v4.widget.SwipeRefreshLayout>

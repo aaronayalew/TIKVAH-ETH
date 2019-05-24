@@ -76,6 +76,7 @@ public class JSONHelper {
             }
         } catch (Exception ex) {
             Log.d("JSON",ex.toString());
+            srl.setRefreshing(false);
         }
 
     }
@@ -134,6 +135,7 @@ public class JSONHelper {
             }
         } catch (Exception ex) {
             Log.d("JSON",ex.toString());
+            srl.setRefreshing(false);
         }
 
     }
@@ -171,6 +173,7 @@ public class JSONHelper {
             srl.setRefreshing(false);
         } catch (Exception ex) {
             Log.d("JSON",ex.toString());
+            srl.setRefreshing(false);
         }
     }
     public void refreshMemeListView(JSONObject object){
@@ -206,6 +209,7 @@ public class JSONHelper {
             srl.setRefreshing(false);
         } catch (Exception ex) {
             Log.d("JSON",ex.toString());
+            srl.setRefreshing(false);
         }
     }
 }

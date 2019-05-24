@@ -66,8 +66,7 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
         cat = this.category;
             try {
                 String link = new TikConst().getURL() + "get_news.php";
-                final String data = URLEncoder.encode("cat", "UTF-8") + "=" +
-                        cat;
+                final String data = URLEncoder.encode("cat", "UTF-8") + "=" + cat;
                 final URL url = new URL(link);
                 final StringBuilder sb = new StringBuilder();
                 Thread thread = new Thread(new Runnable() {
@@ -78,22 +77,25 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
                             URLConnection conn = url.openConnection();
                             Log.d("Thread" + cat, "opened connection");
                             conn.setDoOutput(true);
-                            conn.setConnectTimeout(15000);
                             conn.setReadTimeout(50000);
+                            conn.setRequestProperty("Content:type", "application/json");
+                            conn.setRequestProperty("charset","utf-8");
+                            conn.setConnectTimeout(15000);
                             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
                             Log.d("Thread" + cat, "Output Stream Got");
                             wr.write(data);
-                            Log.d("Thread" + cat, "Written");
+                            Log.d("Thread" + cat, "Written: " + data);
                             wr.flush();
                             Log.d("Thread" + cat, "Flushed");
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()),240000);
+                            conn.getInputStream().mark(300000);
                             Log.d("Thread" + cat, "Input Stream Loaded");
-                            String line = null;
+                            String line;
                             while ((line = reader.readLine()) != null) {
                                 sb.append(line);
                                 break;
                             }
-                            Log.d("Thread"  + cat, "Done:" + sb.toString());
+                            Log.d("Thread"  + cat, "Done:" + reader.readLine());
                         } catch (Exception ex) {
                             Log.d("ERROR" + cat, ex.toString());
                             srl.setRefreshing(false);
@@ -109,7 +111,7 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
                     }
                 });
                 thread.run();
-            newNews = true;
+                newNews = true;
             return sb.toString();
         } catch (Exception e) {
             Log.d("Error", e.toString());

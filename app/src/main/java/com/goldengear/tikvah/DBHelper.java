@@ -39,8 +39,8 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertNews  (String[] id,String[] title, String[] desc, String[] pic,String[] time, String[] category)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE articles");
         db.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`ID` int(11) NOT NULL,`title` tinytext NOT NULL,`desc` mediumtext NOT NULL,`picture` tinytext NOT NULL,`time` tinytext,`category` text NOT NULL)");
+        db.execSQL("DELETE FROM `articles` WHERE `articles`.`category` LIKE '" + category + "'");
         int l = id.length;
         for(int i = 0; i < l; i++) {
 
@@ -60,7 +60,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertMeme  (String[] id,String[] image, String[] date, String[] provider_id,String[] provider_image, String[] provider_name, String[] text)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE memes");
+        db.execSQL("DROP TABLE IF EXISTS memes");
         db.execSQL("CREATE TABLE IF NOT EXISTS `memes` (`ID` int(11) NOT NULL, `image` tinytext NOT NULL,`date` tinytext NOT NULL,`provider_id` text NOT NULL,`provider_name` tinytext NOT NULL,`provider_image` tinytext NOT NULL,`text` text NOT NULL)");
         int l = id.length;
         for(int i = 0; i < l; i++) {
@@ -86,8 +86,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     public int numberOfRows(){
         SQLiteDatabase db = this.getReadableDatabase();
-        int numRows = (int) DatabaseUtils.queryNumEntries(db,
-                "articles");
+        int numRows;
+        try {
+            numRows = (int) DatabaseUtils.queryNumEntries(db,
+                    "articles");
+        } catch (android.database.sqlite.SQLiteException ex) {
+            numRows = 0;
+        }
         return numRows;
     }
     public JSONObject getMeme(int startId, int stopId)

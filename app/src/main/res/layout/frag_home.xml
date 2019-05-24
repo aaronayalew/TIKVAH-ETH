@@ -35,6 +35,7 @@
         android:layout_height="match_parent"
         android:smoothScrollbar="true"
         android:scrollingCache="false"
+        android:background="#dfdfdf"
         android:drawingCacheQuality="auto"
         android:animationCache="false"
         />
