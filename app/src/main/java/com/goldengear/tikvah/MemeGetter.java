@@ -3,22 +3,17 @@ package com.goldengear.tikvah;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 
 /**
  * Created by Aaron Ayalew on 11/27/2018.
@@ -73,7 +68,6 @@ public class MemeGetter extends AsyncTask<String,Void,String>{
                         Log.d("Thread Meme", "Done:" + sb.toString());
                     } catch (Exception ex) {
                         Log.d("ERROR Meme", ex.toString());
-                        srl.setRefreshing(false);
                         Snackbar.make(rootView, "Couldn't Connect", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -99,6 +93,8 @@ public class MemeGetter extends AsyncTask<String,Void,String>{
         Log.d("Result", s);
         JSONHelper helper = new JSONHelper(ctx,lv,srl,app);
         helper.refreshMemeListView(s);
+        srl.setRefreshing(false);
+
     }
 
 }

@@ -169,7 +169,7 @@
             app:srcCompat="@drawable/ic_convert" />
 
     </LinearLayout>
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.core.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"
@@ -183,5 +183,5 @@
             android:background="#dfdfdf"
             android:id="@+id/lstBus"
         />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.core.widget.SwipeRefreshLayout>
 </LinearLayout>

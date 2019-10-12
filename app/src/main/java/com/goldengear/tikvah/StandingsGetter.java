@@ -3,16 +3,13 @@ package com.goldengear.tikvah;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -21,7 +18,6 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.List;
 
 /**
  * Created by Aaron Ayalew on 12/16/2018.
@@ -71,7 +67,6 @@ public class StandingsGetter extends AsyncTask<String,Void,String> {
             return null;
         } catch (Exception ex){
             Log.d("Threadst", "Error: " + ex.getMessage());
-            srl.setRefreshing(false);
             Snackbar.make(srl,"Error while getting data",Snackbar.LENGTH_LONG);
         }
         return null;
@@ -124,5 +119,7 @@ public class StandingsGetter extends AsyncTask<String,Void,String> {
         } catch (Exception ex) {
             Log.d("Standings", "Error: " + ex.getMessage());
         }
+        srl.setRefreshing(false);
+
     }
 }

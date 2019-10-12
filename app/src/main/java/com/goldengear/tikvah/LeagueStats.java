@@ -1,11 +1,9 @@
 package com.goldengear.tikvah;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,10 +15,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.content.Context;
-import android.support.v7.widget.ThemedSpinnerAdapter;
+import androidx.appcompat.widget.ThemedSpinnerAdapter;
 import android.content.res.Resources.Theme;
 
-import android.widget.Switch;
 import android.widget.TextView;
 
 public class LeagueStats extends AppCompatActivity {

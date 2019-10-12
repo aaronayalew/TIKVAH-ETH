@@ -2,14 +2,12 @@ package com.goldengear.tikvah;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.crypto.spec.DHGenParameterSpec;
 
 /**
  * Created by Aaron Ayalew on 10/31/2018.
