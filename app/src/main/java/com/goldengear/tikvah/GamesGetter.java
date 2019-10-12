@@ -76,20 +76,13 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 else yesterday = String.valueOf(year) + "-"  + String.valueOf(month - 1) + "-" + String.valueOf(30);
             }
 
-            final String data = URLEncoder.encode("url", "UTF-8") + "=" + URLEncoder.encode("https://apifootball.com/api/?action=get_events&from=2018-01-20" + "&to=" + tomorrow + "&league_id=" + strings[0] + "&APIkey=6b5092e236a9479381743ac4b6718f2934627d820776735bc82de4a32c24169d","UTF-8");
-            Log.d("Threadgames","Data = " + data);
-            URL uri = new URL("http://tikvah.xyz/soccer_api_test.php");
+            URL uri = new URL(new TikConst().getURL() + "get_prem_fix.php");
             Log.d("Threadgames", "Starting Thread");
             URLConnection conn = uri.openConnection();
             Log.d("Threadgames", "Opened Connection");
             conn.setConnectTimeout(120000);
             conn.setReadTimeout(180000);
             conn.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            Log.d("Threadgames", "Output Stream Got");
-            wr.write(data);
-            Log.d("Threadgames", "Written");
-            wr.flush();
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line = null;
             StringBuilder sb = new StringBuilder();
@@ -111,8 +104,10 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
         super.onPostExecute(s);
         srl.setRefreshing(false);
         try {
-            JSONArray jsonArray = new JSONArray(result);
-            int l = jsonArray.length() + 3;
+            JSONObject jobject = new JSONObject(result).getJSONObject("data");
+            JSONArray jsonArray = new JSONArray();
+            jsonArray = jobject.getJSONArray("fixtures");
+            int l = jsonArray.length();
             Log.d("Threadga","JSONArray length = " + jsonArray.length());
             int[] ids = new int[l];
             String[] dates = new String[l];
@@ -123,134 +118,27 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             String[] awaynames = new String[l];
             int[] awayscores = new int[l];
             int[] isLives = new int[l];
-            JSONArray details = new JSONArray();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd ");
-            String tod = formatter.format(today);
-            int year = Integer.valueOf(tod.substring(0,4));
-            int month = Integer.valueOf(tod.substring(5,7));
-            int day = Integer.valueOf(tod.substring(8,10));
-            int tom = 1;
-            boolean lstDate = isLastDate(year,month,day);
-            dates[0] = "Tomorrow";
-            for(int i = 0; i < l - 3;i++ ) {
-                JSONObject object = jsonArray.getJSONObject(i);
-                String date = object.optString("match_date");
-                int yeard = Integer.valueOf(date.substring(0, 4));
-                int monthd = Integer.valueOf(date.substring(5, 7));
-                int dayd = Integer.valueOf(date.substring(8, 10));
-                if (((!lstDate) && yeard == year && monthd == month && dayd == day + 1) || (lstDate && yeard == year && monthd == month + 1 && dayd == 1)) {
-                    details.put(tom,object);
-                    ids[tom] = object.optInt("match_id");
-                    dates[tom] = object.optString("match_date");
-                    times[tom] = object.optString("match_time");
-                    statuses[tom] = object.optString("match_status");
-                    homenames[tom] = object.optString("match_hometeam_name");
-                    homescores[tom] = object.optInt("match_hometeam_score");
-                    awaynames[tom] = object.optString("match_awayteam_name");
-                    awayscores[tom] = object.optInt("match_awayteam_score");
-                    isLives[tom] = object.optInt("match_live");
-                    Log.d("Threadga", "Tom = " + tom);
-                    tom++;
-                }
-            }
-            dates[tom] = "Today";
-            Log.d("Threadga", "Tom = " + tom + " At today");
+            try {
+                for(int i = 0; i < l; i++) {
+                    JSONObject object = jsonArray.getJSONObject(i);
+                    ids[i] = object.optInt("id");
+                    dates[i] = object.optString("date");
+                    times[i] = object.optString("time");
+                    homenames[i] = object.optString("home_name");
+                    awaynames[i] = object.optString("away_name");
+                    statuses[i] = object.optString("location");
+//                  homescores[tom] = object.optInt("match_hometeam_score");
+//                  awayscores[tom] = object.optInt("match_awayteam_score");
+//                  isLives[tom] = object.optInt("match_live");
 
-            tom++;
-            for(int i = 0; i < l - 3;i++ ) {
-                JSONObject object = jsonArray.getJSONObject(i);
-                String date = object.optString("match_date");
-                int yeard = Integer.valueOf(date.substring(0, 4));
-                int monthd = Integer.valueOf(date.substring(5, 7));
-                int dayd = Integer.valueOf(date.substring(8, 10));
-                if (yeard == year && monthd == month && day == dayd) {
-                    details.put(tom,object);
-                    ids[tom] = object.optInt("match_id");
-                    dates[tom] = object.optString("match_date");
-                    times[tom] = object.optString("match_time");
-                    statuses[tom] = object.optString("match_status");
-                    homenames[tom] = object.optString("match_hometeam_name");
-                    homescores[tom] = object.optInt("match_hometeam_score");
-                    awaynames[tom] = object.optString("match_awayteam_name");
-                    awayscores[tom] = object.optInt("match_awayteam_score");
-                    isLives[tom] = object.optInt("match_live");
-                    Log.d("Threadga", "Tom = " + tom);
-                    tom++;
                 }
+            } catch (Exception ex) {
+                Log.d("Threadgames", "Error here: " + ex.getMessage());
             }
-            String yesterday;
-            int cday,cmonth,cyear;
-            if(day != 1) {
-                cday = day - 1;
-                cmonth = month;
-                cyear = year;
-            } else {
-                if (month == 2 || month == 4 || month == 6 || month == 8 || month == 9 || month == 11 || month == 1) {
-                    cday = 31;
-                    cmonth = month - 1;
-                    cyear = year;
-                } else if (month == 3 && year % 4 != 0) {
-                    cday = 28;
-                    cmonth = month - 1;
-                    cyear = year;
-                } else if (month == 3 && year % 4 == 0) {
-                    cday = 29;
-                    cmonth = month - 1;
-                    cyear = year;
-                } else {
-                    cday = 30;
-                    cmonth = month - 1;
-                    cyear = year;                }
-            }
-            dates[tom] = "Yesterday";
-            Log.d("Threadga", "Tom = " + tom + "At yesterday");
-            tom++;
-            for(int i = 0; i < l - 3;i++ ) {
-                JSONObject object = jsonArray.getJSONObject(i);
-                String date = object.optString("match_date");
-                int yeard = Integer.valueOf(date.substring(0, 4));
-                int monthd = Integer.valueOf(date.substring(5, 7));
-                int dayd = Integer.valueOf(date.substring(8, 10));
-                Log.d("Threadgames","Date = " + date);
-                //yeard == cyear && monthd == cmonth && dayd == cday
-                if (date.contains("2019-01-20")) {
-                    details.put(tom,object);
-                    ids[tom] = object.optInt("match_id");
-                    dates[tom] = object.optString("match_date");
-                    times[tom] = object.optString("match_time");
-                    statuses[tom] = object.optString("match_status");
-                    homenames[tom] = object.optString("match_hometeam_name");
-                    homescores[tom] = object.optInt("match_hometeam_score");
-                    awaynames[tom] = object.optString("match_awayteam_name");
-                    awayscores[tom] = object.optInt("match_awayteam_score");
-                    isLives[tom] = object.optInt("match_live");
-                    Log.d("Threadga", "Tom = " + tom);
-                    tom++;
-                }
-            }
-            int[] idsr = new int[tom];
-            String[] datesr = new String[tom];
-            String[] timesr = new String[tom];
-            String[] statusesr = new String[tom];
-            String[] homenamesr = new String[tom];
-            int[] homescoresr = new int[tom];
-            String[] awaynamesr = new String[tom];
-            int[] awayscoresr = new int[tom];
-            int[] isLivesr = new int[tom];
-            for(int j = 0; j < tom;j++) {
-                idsr[j] = ids[j];
-                datesr[j] = dates[j];
-                timesr[j] = times[j];
-                statusesr[j] = statuses[j];
-                homenamesr[j] = homenames[j];
-                homescoresr[j] = homescores[j];
-                awaynamesr[j] = awaynames[j];
-                awayscoresr[j] = awayscores[j];
-                isLivesr[j] = isLives[j];
-            }
-            final GamesAdapter adapter = new GamesAdapter(ctx,idsr,datesr,timesr,statusesr,homenamesr,homescoresr,awaynamesr,awayscoresr,isLivesr,details,app);
+
+            final GamesAdapter adapter = new GamesAdapter(ctx,ids,dates,times,statuses,homenames,awaynames,app);
             lv.setAdapter(adapter);
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(app.getApplicationContext(),GameInfo.class);
@@ -258,10 +146,10 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                     intent.putExtras(jsonToBundle(obj));
                     ctx.startActivity(intent);
                 }
-            });
+            });*/
             srl.setRefreshing(false);
         } catch (Exception ex) {
-            Log.d("Threadgames", "ERROR: " + ex.toString());
+            Log.d("Threadgames", "ERROR: " + ex.getMessage());
         }
     }
     private boolean isLastDate(int year,int month, int day) {

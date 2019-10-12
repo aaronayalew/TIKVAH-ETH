@@ -38,6 +38,7 @@
         android:background="#dfdfdf"
         android:drawingCacheQuality="auto"
         android:animationCache="false"
+        android:dividerHeight="10dp"
         />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

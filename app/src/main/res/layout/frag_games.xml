@@ -2,17 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.goldengear.tikvah.FragGames">
+    tools:context="com.goldengear.tikvah.FragGames"
+    android:background="#ffffff"
+    >
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/srlGames"
-        android:layout_marginBottom="?attr/actionBarSize"
-        >
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="?attr/actionBarSize">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lstGames"
+            android:dividerHeight="15dp"
+
+            android:background="#ffffff"
             />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>
