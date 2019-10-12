@@ -12,7 +12,6 @@ public class calendarForAaron{
     private calendarForAaron(){}
 
     public static int[] convertToEC (int day, int month, int year){
-
         double x;
         double R;
         double N;

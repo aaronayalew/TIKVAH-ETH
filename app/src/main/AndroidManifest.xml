@@ -20,7 +20,8 @@
         android:largeHeap="true"
         android:roundIcon="@drawable/abc"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_secirity_config">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8089746021276960~9698421771" />
