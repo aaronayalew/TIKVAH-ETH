@@ -9,15 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/srlGames"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:background="@android:color/white"
+        android:layout_marginTop="?attr/actionBarSize"
         android:layout_marginBottom="?attr/actionBarSize">
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lstGames"
-            android:dividerHeight="15dp"
-
+            android:dividerHeight="0dp"
             android:background="#ffffff"
             />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
