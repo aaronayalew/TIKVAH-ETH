@@ -9,6 +9,7 @@ import androidx.appcompat.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -33,13 +34,14 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
     boolean newNews;
     Activity app;
     Boolean success = true;
-
-    public NewsGetter(Context context, String param, ListView list, View rootV, SwipeRefreshLayout srl, Activity app){
+    ProgressBar pb;
+    public NewsGetter(Context context, String param, ListView list, View rootV, SwipeRefreshLayout srl, ProgressBar pb,Activity app){
         this.ctx = context;
         this.category = param;
         this.lv = list;
         this.rootView = rootV;
         this.srl = srl;
+        this.pb = pb;
         this.app = app;
     }
 
@@ -117,7 +119,12 @@ public class NewsGetter extends AsyncTask<String,Void,String> {
         super.onPostExecute(s);
         Log.d("Result", s);
         JSONHelper helper = new JSONHelper(ctx,lv,srl,app);
-        if(success) helper.refreshListView(s,newNews,category);
+        if(success){
+            helper.refreshListView(s,newNews,category);
+            if(pb != null) {
+                pb.setVisibility(View.GONE);
+            }
+        }
 
     }
 

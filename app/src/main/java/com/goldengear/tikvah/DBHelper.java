@@ -39,6 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean insertNews  (String[] id,String[] title, String[] desc, String[] pic,String[] time, String[] category)
     {
         SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS 'articles'");
         db.execSQL("CREATE TABLE IF NOT EXISTS `articles` (`ID` int(11) NOT NULL,`title` tinytext NOT NULL,`desc` mediumtext NOT NULL,`picture` tinytext NOT NULL,`time` tinytext,`category` text NOT NULL)");
         db.execSQL("DELETE FROM `articles` WHERE `articles`.`category` LIKE '" + category + "'");
         int l = id.length;

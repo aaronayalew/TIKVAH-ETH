@@ -67,12 +67,12 @@ public class FragBusiness extends Fragment {
 
         JSONHelper jsonHelper = new JSONHelper(getContext(),lv,rootView,getActivity());
         jsonHelper.refreshListView(object,false,"business");
-        NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"business",lv,rootView,rootView,getActivity());
+        NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"business",lv,rootView,rootView,null,getActivity());
         ng.execute();
         rootView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"business",lv,rootView,rootView,getActivity());
+                NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"business",lv,rootView,rootView,null,getActivity());
                 ng.execute();
             }
         });
@@ -108,12 +108,11 @@ public class FragBusiness extends Fragment {
             try {
                 StringBuilder sb = new StringBuilder();
                 Log.d("RateGetter", "Starting Execution");
-                URL uri = new URL("http://free.currencyconverterapi.com/api/v7/convert?apiKey=2b89bf0cf04322a98068&q=USD_ETB,EUR_ETB&compact=y");
+                URL uri = new URL("http://free.currconv.com/api/v7/convert?apiKey=2b89bf0cf04322a98068&q=USD_ETB,EUR_ETB&compact=y");
                 URLConnection conn = uri.openConnection();
                 Log.d("RateGetter", "Opened Connection, Preparing to recieve data");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 Log.d("RateGetter", "Input Stream Initialized, Parsing Data");
-
                 String line = null;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line);
@@ -123,6 +122,7 @@ public class FragBusiness extends Fragment {
                 String usdeur = sb.toString();
                 return  usdeur;
             } catch (Exception ex) {
+                Log.d("RateError", ex.getMessage());
                 return null;
             }
         }
@@ -150,8 +150,7 @@ public class FragBusiness extends Fragment {
                     txtEuro.setText(eurvalstr);
 
                 } catch (JSONException ex) {
-
-            }
+                }
             }
 
         }
@@ -166,7 +165,7 @@ public class FragBusiness extends Fragment {
                 USD = strings[0];
                 EUR = strings[1];
                 StringBuilder sb2 = new StringBuilder();
-                URL uri2 = new URL("http://free.currencyconverterapi.com/api/v7/convert?apiKey=2b89bf0cf04322a98068&q=GBP_ETB,CNY_ETB&compact=y");
+                URL uri2 = new URL("http://free.currconv.com/api/v7/convert?apiKey=2b89bf0cf04322a98068&q=GBP_ETB,CNY_ETB&compact=y");
                 URLConnection conn2 = uri2.openConnection();
                 Log.d("RateGetter", "Opened Connection, Preparing to recieve data");
                 BufferedReader reader2 = new BufferedReader(new InputStreamReader(conn2.getInputStream()));
@@ -181,6 +180,7 @@ public class FragBusiness extends Fragment {
 
                 return gbpcny;
             } catch (Exception ex) {
+                Log.d("RateError", ex.getMessage());
                 return null;
             }
         }
@@ -223,7 +223,7 @@ public class FragBusiness extends Fragment {
                 PND = strings[2];
                 RMB = strings[3];
                 StringBuilder sb2 = new StringBuilder();
-                URL uri2 = new URL("http://free.currencyconverterapi.com/api/v7/convert?apiKey=2b89bf0cf04322a98068&q=AED_ETB,KWD_ETB&compact=y");
+                URL uri2 = new URL("http://free.currconv.com/api/v7/convert?apiKey=2b89bf0cf04322a98068&q=AED_ETB,KWD_ETB&compact=y");
                 URLConnection conn2 = uri2.openConnection();
                 Log.d("RateGetter", "Opened Connection, Preparing to recieve data");
                 BufferedReader reader2 = new BufferedReader(new InputStreamReader(conn2.getInputStream()));
@@ -238,6 +238,7 @@ public class FragBusiness extends Fragment {
 
                 return gbpcny;
             } catch (Exception ex) {
+                Log.d("RateError", ex.getMessage());
                 return null;
             }
         }

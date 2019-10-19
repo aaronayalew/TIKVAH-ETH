@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -41,6 +42,7 @@ public class FragHome extends Fragment {
         Log.d("Aaron", "Adapter Set, Returning inflated View");
         final LinearLayout rootView = result.findViewById(R.id.lnlHome);
         final SwipeRefreshLayout srl = result.findViewById(R.id.srlHome);
+        final ProgressBar pb = result.findViewById(R.id.pbHome);
         TextView amDate = (TextView) result.findViewById(R.id.txtAmDate);
         Date today = Calendar.getInstance().getTime();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd ");
@@ -51,6 +53,7 @@ public class FragHome extends Fragment {
         Log.d("DateConv","Today(formatted) is: " + tod);
         String amh = calendarForAaron.convertToECString(day,month,year);
         amDate.setText("ዛሬ ቀኑ：" + amh);
+
         helper = new DBHelper(getContext(),"newsDB");
         Log.d("DBHelper", "No of rows - " + helper.numberOfRows());
         if(helper.numberOfRows() > 0) {
@@ -58,12 +61,13 @@ public class FragHome extends Fragment {
             JSONHelper jsonHelper = new JSONHelper(getContext(),lv,srl,getActivity());
             jsonHelper.refreshListView(jsonObject,false,"general");
         }
-        NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,getActivity());
+        NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,pb,getActivity());
         ng.execute();
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,getActivity());
+                pb.setVisibility(View.VISIBLE);
+                NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,pb,getActivity());
                 ng.execute();
             }
         });

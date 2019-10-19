@@ -220,7 +220,7 @@ public class NewsAdapter extends ArrayAdapter {
                     holder.img.setImageBitmap(bm);
                 } else {
                     DWImage downloader = new DWImage(holder.img);
-                    downloader.execute(new TikConst().getURL() + "/img/" + images[position], images[position]);
+                    downloader.execute(new TikConst().getURL() + "img/" + images[position], images[position]);
                 }
             } else {
                 Thread thread1 = new Thread(new Runnable() {
