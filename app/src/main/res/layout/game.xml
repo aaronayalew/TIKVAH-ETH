@@ -2,105 +2,148 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white">
-<androidx.cardview.widget.CardView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    app:cardElevation="20dp"
-    app:cardCornerRadius="12dp"
-    android:layout_marginTop="7dp"
-    android:layout_marginBottom="7dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    >
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="41dp"
-        android:layout_height="43dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="39dp"
-        android:layout_marginStart="39dp"
-        app:srcCompat="@drawable/arslogo" />
-
-    <TextView
-        android:id="@+id/txtHomeName"
-        android:layout_width="120dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView"
-        android:text="Manchester United"
-        android:textAlignment="center"
-        android:textSize="14sp" />
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="7dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="20dp">
 
-    <TextView
-        android:id="@+id/txtMatchHomeScore"
-        android:layout_width="15dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/txtMatchTime"
-        android:layout_alignStart="@+id/txtMatchTime"
-        android:layout_below="@+id/txtMatchTime"
-        android:layout_gravity="end"
-        android:text="3"
-        android:textAlignment="center"
-        android:textSize="14sp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
 
-    <TextView
-        android:id="@+id/txtAwayScore"
-        android:layout_width="15dp"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/txtMatchTime"
-        android:layout_alignRight="@+id/txtMatchTime"
-        android:layout_below="@+id/txtMatchTime"
-        android:layout_gravity="end"
-        android:layout_weight="0"
-        android:text="5"
-        android:textAlignment="center"
-        android:textSize="14sp" />
+            <ImageView
+                android:id="@+id/ivHome"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/arslogo"
+                tools:layout_conversion_wrapHeight="113"
+                tools:layout_conversion_wrapWidth="108" />
 
-    <TextView
-        android:id="@+id/txtAwayName"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/imageView4"
-        android:layout_weight="1"
-        android:text="Arsenal FC"
-        android:textAlignment="center"
-        android:textSize="14sp" />
+            <TextView
+                android:id="@+id/txtHomeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="12dp"
+                android:text="Arsenal FC"
+                android:textColor="#000"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivHome"
+                tools:layout_conversion_wrapHeight="134"
+                tools:layout_conversion_wrapWidth="315" />
 
-    <TextView
-        android:id="@+id/txtMatchTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:background="#cfcfcf"
-        android:text="08:00"
-        android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/txtAwayName"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/txtAwayName"
-        android:layout_marginLeft="38dp"
-        android:layout_marginStart="38dp"
-        app:srcCompat="@drawable/juvlogo" />
+                <TextView
+                    android:id="@+id/txtMatchHomeScore"
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="12dp"
+                    android:text="3"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    tools:layout_conversion_wrapHeight="63"
+                    tools:layout_conversion_wrapWidth="39" />
 
-</RelativeLayout>
-</androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/txtAwayScore"
+                    android:layout_width="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="12dp"
+                    android:layout_weight="0"
+                    android:text="5"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    tools:layout_conversion_wrapHeight="63"
+                    tools:layout_conversion_wrapWidth="39" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtAwayName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_weight="1"
+                android:paddingRight="12dp"
+                android:text="Juventus FC"
+                android:textAlignment="textEnd"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivAway"
+                tools:layout_conversion_wrapHeight="71"
+                tools:layout_conversion_wrapWidth="315" />
+
+            <TextView
+                android:id="@+id/txtMatchTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@color/colorAccent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="Oct 19 08:00"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_wrapHeight="50"
+                tools:layout_conversion_wrapWidth="251" />
+
+            <ImageView
+                android:id="@+id/ivAway"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/juvlogo"
+                tools:layout_conversion_wrapHeight="105"
+                tools:layout_conversion_wrapWidth="105" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </FrameLayout>
 

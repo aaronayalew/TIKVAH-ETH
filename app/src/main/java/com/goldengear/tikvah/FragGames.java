@@ -25,13 +25,21 @@ public class FragGames extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View result =  inflater.inflate(R.layout.frag_games, container, false);
-        ListView lv = result.findViewById(R.id.lstGames);
+        final View result =  inflater.inflate(R.layout.frag_games, container, false);
+        final ListView lv = result.findViewById(R.id.lstGames);
 
-        int Id = getArguments().getInt("league_id");
-        SwipeRefreshLayout srl = result.findViewById(R.id.srlGames);
+        final int Id = getArguments().getInt("league_id");
+        final SwipeRefreshLayout srl = result.findViewById(R.id.srlGames);
         GamesGetter gamesGetter = new GamesGetter(getContext(),lv,getActivity(),srl,srl);
         gamesGetter.execute(String.valueOf(Id));
+        //TODO: add the onClick listener and start working on GameStat
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GamesGetter gamesGetter = new GamesGetter(getContext(),lv,getActivity(),srl,srl);
+                gamesGetter.execute(String.valueOf(Id));
+            }
+        });
         return result;
     }
 

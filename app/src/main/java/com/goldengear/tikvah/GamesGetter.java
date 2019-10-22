@@ -21,8 +21,10 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import io.fabric.sdk.android.services.concurrency.AsyncTask;
 
@@ -108,35 +110,32 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             JSONArray jsonArray = new JSONArray();
             jsonArray = jobject.getJSONArray("fixtures");
             int l = jsonArray.length();
-            Log.d("Threadga","JSONArray length = " + jsonArray.length());
-            int[] ids = new int[l];
-            String[] dates = new String[l];
-            String[] times = new String[l];
-            String[] statuses = new String[l];
             String[] homenames = new String[l];
-            int[] homescores = new int[l];
-            String[] awaynames = new String[l];
-            int[] awayscores = new int[l];
-            int[] isLives = new int[l];
+            Log.d("Threadga","JSONArray length = " + jsonArray.length());
+            List<Game> games = new ArrayList<Game>();
             try {
                 for(int i = 0; i < l; i++) {
                     JSONObject object = jsonArray.getJSONObject(i);
-                    ids[i] = object.optInt("id");
-                    dates[i] = object.optString("date");
-                    times[i] = object.optString("time");
+                    Game game = new Game(object.optInt("id"));
+                    game.setLive(false);
+                    game.setDate(object.optString("date"));
+                    game.setTime(object.optString("time"));
+                    game.setRound(object.optString("round"));
+                    game.setHome_name(object.optString("home_name"));
+                    game.setAway_name(object.optString("away_name"));
+                    game.setLocation(object.optString("location"));
+                    game.setLeague_id(object.optInt("league_id"));
+                    game.setHome_id(object.optInt("home_id"));
+                    game.setAway_id(object.optInt("away_id"));
+                    game.setCompetition_id(object.optInt("competition_id"));
+                    games.add(game);
                     homenames[i] = object.optString("home_name");
-                    awaynames[i] = object.optString("away_name");
-                    statuses[i] = object.optString("location");
-//                  homescores[tom] = object.optInt("match_hometeam_score");
-//                  awayscores[tom] = object.optInt("match_awayteam_score");
-//                  isLives[tom] = object.optInt("match_live");
-
                 }
             } catch (Exception ex) {
                 Log.d("Threadgames", "Error here: " + ex.getMessage());
             }
 
-            final GamesAdapter adapter = new GamesAdapter(ctx,ids,dates,times,statuses,homenames,awaynames,app);
+            final GamesAdapter adapter = new GamesAdapter(ctx,games,homenames,app);
             lv.setAdapter(adapter);
         /*    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

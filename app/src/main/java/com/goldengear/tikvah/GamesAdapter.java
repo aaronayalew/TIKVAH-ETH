@@ -4,45 +4,47 @@ import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * Created by Aaron Ayalew on 12/30/2018.
  */
 
 public class GamesAdapter extends ArrayAdapter {
-    int[] ids;
-    String[] dates;
-    String[] times;
-    String[] statuses;
-    String[] homenames;
-    int[] homescores;
-    String[] awaynames;
-    int[] awayscores;
-    int[] isLives;
+    List<Game> games;
     Activity app;
-    GamesAdapter(@NonNull Context context, int[] ids, String[] dates, String[] times, String[] statuses, String[] homenames,  String[] awaynames, Activity app) {
+    GamesAdapter(@NonNull Context context, List<Game> games, String[] homenames, Activity app) {
         super(context, R.layout.game, R.id.txtHomeName,homenames);
-        this.ids = ids;
-        this.dates = dates;
-        this.times = times;
-        this.statuses = statuses;
-        this.homenames = homenames;
-        this.awaynames = awaynames;
-//      this.isLives = isLives;
-//      this.details = details;
+        this.games = games;
         this.app = app;
     }
     static class  ViewHolder {
         TextView time, stat, hname, aname, hscore, ascore;
+        ImageView hEmblem, aEmblem;
     }
     @NonNull
     @Override
@@ -56,33 +58,26 @@ public class GamesAdapter extends ArrayAdapter {
             holder.aname = convertView.findViewById(R.id.txtAwayName);
             holder.hscore = convertView.findViewById(R.id.txtMatchHomeScore);
             holder.ascore = convertView.findViewById(R.id.txtAwayScore);
+            holder.hEmblem = convertView.findViewById(R.id.ivHome);
+            holder.aEmblem = convertView.findViewById(R.id.ivAway);
             convertView.setTag(holder);
         }
-        ViewHolder holder = (ViewHolder) convertView.getTag();
-        holder.time.setText(times[position]);
-        holder.hname.setText(homenames[position].replace("&amp;", "&"));
-        holder.aname.setText(awaynames[position].replace("&amp;", "&"));
-        holder.hscore.setText("-");
-        holder.ascore.setText("-");
-
-
+        final ViewHolder holder = (ViewHolder) convertView.getTag();
+        Game game = games.get(position);
+        holder.time.setText(game.getTime());
+        holder.hname.setText(game.getHome_name().replace("&amp;", "&"));
+        holder.aname.setText(game.getAway_name().replace("&amp;", "&"));
+        holder.hscore.setText("V");
+        holder.ascore.setText("S");
+        final String hImage = game.getHome_name().replace("&amp;", "&") + ".png";
+        final String aImage = game.getAway_name().replace("&amp;", "&") + ".png";
+        TikConst tc = new TikConst();
+        Picasso.with(app).setLoggingEnabled(true);
+        Picasso.with(app.getApplicationContext()).load(tc.getURL() + "img/teams/" + hImage).into(holder.hEmblem);
+        Picasso.with(app.getApplicationContext()).load(tc.getURL() + "img/teams/" + aImage).into(holder.aEmblem);
+        //TODO: Use Picasso for all adapters.
         return convertView;
     }
 
-   /* public boolean isGame(int pos) {
-        if(dates[pos].contains("Today") || dates[pos].contains("Yesterday") || dates[pos].contains("Tomorrow")) {
-            return false;
-        } else {
-            return true;
-        }
-    }*/
-   /* public JSONObject getDetails(int pos) {
-        try {
-            return details.getJSONObject(pos);
-        } catch (Exception ex){
-            Log.d("Threadgames", "An error occured while trying to obtaining Details from json array. Error: " + ex.getMessage() );
-            return null;
-        }
-    }*/
 }
 

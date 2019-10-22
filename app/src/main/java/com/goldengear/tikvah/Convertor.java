@@ -29,7 +29,6 @@ public class Convertor extends AppCompatActivity {
         to.setEnabled(false);
         final Spinner source = (Spinner) findViewById(R.id.spnFrom);
         final Spinner target = (Spinner) findViewById(R.id.spnTo);
-        //TODO: Fix up the spinner item layouts!
         ArrayAdapter srcAdapter = new ArrayAdapter(this,R.layout.spinner_item_curr, currencies);
         source.setAdapter(srcAdapter);
         ArrayAdapter tarAdapter = new ArrayAdapter(this,R.layout.spinner_item_curr, currencies);
