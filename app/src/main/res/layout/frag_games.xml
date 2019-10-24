@@ -1,23 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="?android:attr/actionBarSize"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.goldengear.tikvah.FragGames"
     android:background="#ffffff"
-    >
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:orientation="vertical"
+    android:id="@+id/frameLayout">
+
+    <FrameLayout
+        android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/srlGames"
-        android:background="@android:color/white"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="?attr/actionBarSize">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#dfdfdf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="50dp"
+        tools:layout_conversion_absoluteWidth="411dp">
+
         <ListView
+            android:id="@+id/lstLiveGames"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="159dp"
+            android:background="#fff" />
+    </FrameLayout>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srlGames"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_conversion_absoluteHeight="619dp"
+        tools:layout_conversion_absoluteWidth="411dp"
+        tools:layout_editor_absoluteY="56dp">
+
+        <ListView
             android:id="@+id/lstGames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#fff"
             android:dividerHeight="0dp"
-            android:background="#ffffff"
-            />
+            tools:layout_conversion_absoluteHeight="0dp"
+            tools:layout_conversion_absoluteWidth="0dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="56dp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</FrameLayout>
+</LinearLayout>

@@ -16,6 +16,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -78,7 +80,7 @@ public class MemeAdapter extends ArrayAdapter {
         holder.desc.setText(texts[position]);
         holder.time.setText(dates[position]);
         holder.belTitle.setText(provider_names[position] + ": ");
-        DWImage downloader1 = new DWImage(holder.logo);
+        /*DWImage downloader1 = new DWImage(holder.logo);
         File cachDir = ctx.getCacheDir();
         if (new File(cachDir.getAbsolutePath() + "/" + provider_images[position]).exists()) {
             Bitmap bm = BitmapFactory.decodeFile(cachDir.getAbsolutePath() + "/" + provider_images[position]);
@@ -93,11 +95,13 @@ public class MemeAdapter extends ArrayAdapter {
             DWImage downloader2 = new DWImage(holder.meme);
             downloader2.execute(new TikConst().getURL() + "img/memes/" + images[position], images[position]);
 
-        }
+        }*/
+        Picasso.with(app).load(new TikConst().getURL() + "img/memes/" + images[position]).into(holder.meme);
+        Picasso.with(app).load(new TikConst().getURL() + "img/prov/" + provider_images[position]).into(holder.logo);
         return convertView;
     }
 
-    private class DWImage extends AsyncTask<String,Void,Bitmap> {
+    /*private class DWImage extends AsyncTask<String,Void,Bitmap> {
         ImageView bmimage;
         public DWImage(ImageView imgv) {
             this.bmimage = imgv;
@@ -126,5 +130,5 @@ public class MemeAdapter extends ArrayAdapter {
             super.onPostExecute(bitmap);
             bmimage.setImageBitmap(bitmap);
         }
-    }
+    }*/
 }

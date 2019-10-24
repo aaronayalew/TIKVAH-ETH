@@ -128,16 +128,20 @@ public class Game {
     }
 
     public String getTime() {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-            Date parsed = sdf.parse(time);
-            SimpleDateFormat sdfinal = new SimpleDateFormat("HH:mm");
-            sdfinal.setTimeZone(TimeZone.getTimeZone("Africa/Addis_Ababa"));
-            return sdfinal.format(parsed);
-        } catch(Exception ex) {
-            return null;
+        if (!this.isLive()) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                Date parsed = sdf.parse(time);
+                SimpleDateFormat sdfinal = new SimpleDateFormat("HH:mm");
+                sdfinal.setTimeZone(TimeZone.getTimeZone("Africa/Addis_Ababa"));
+                return sdfinal.format(parsed);
+            } catch (Exception ex) {
+                return null;
 
+            }
+        } else {
+            return time.substring(0,1) + "'";
         }
     }
 

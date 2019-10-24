@@ -33,7 +33,7 @@ import io.fabric.sdk.android.services.concurrency.AsyncTask;
  */
 
 public class GamesGetter extends AsyncTask<String,Void,String> {
-    String result;
+    String result, resultl;
     ListView lv;
     Activity app;
     Context ctx;
@@ -66,7 +66,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             int month = Integer.valueOf(tod.substring(5,7));
             int day = Integer.valueOf(tod.substring(8,10));
             boolean lstDate = isLastDate(year,month,day);
-            String tomorrow;
+           /* String tomorrow;
             if(!lstDate) tomorrow = String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day + 1);
             else tomorrow = String.valueOf(year) + "-" + String.valueOf(month + 1) + "-1";
             String yesterday;
@@ -76,7 +76,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 else if(month == 3 && year % 4 != 0) yesterday = String.valueOf(year) + "-" + String.valueOf(month - 1) + "-" + String.valueOf(28);
                 else if(month == 3 && year % 4 == 0) yesterday = String.valueOf(year) + "-" + String.valueOf(month - 1) + "-" + String.valueOf(29);
                 else yesterday = String.valueOf(year) + "-"  + String.valueOf(month - 1) + "-" + String.valueOf(30);
-            }
+            }*/
 
             URL uri = new URL(new TikConst().getURL() + "get_prem_fix.php");
             Log.d("Threadgames", "Starting Thread");
@@ -93,10 +93,24 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             }
             Log.d("Threadgames", "Done:" + sb.toString());
             result = sb.toString();
+            URL uril = new URL(new TikConst().getURL() + "/get_prem_live.php");
+            Log.d("Threadlivegames", "Starting Thread");
+            URLConnection connl = uril.openConnection();
+            Log.d("Threadlivegames", "Opened Connection");
+            connl.setConnectTimeout(120000);
+            connl.setReadTimeout(180000);
+            connl.setDoOutput(true);
+            BufferedReader readerl = new BufferedReader(new InputStreamReader(connl.getInputStream()));
+            String linel = null;
+            StringBuilder sbl = new StringBuilder();
+            while((linel = readerl.readLine()) != null) {
+                sbl.append(linel);
+            }
+            resultl = sbl.toString();
+            Log.d("Threadlivegames", "Result = " + resultl);
             return null;
         } catch (Exception ex){
-            Log.d("Threadgames", "Error: " + ex.getMessage());
-            Snackbar.make(srl,"Error while getting data",Snackbar.LENGTH_LONG);
+            Log.d("Threadlivegames", "Error: " + ex.toString());
         }
         return null;
     }
@@ -136,7 +150,6 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             }
 
             final GamesAdapter adapter = new GamesAdapter(ctx,games,homenames,app);
-            lv.setAdapter(adapter);
         /*    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -146,9 +159,39 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                     ctx.startActivity(intent);
                 }
             });*/
+            JSONObject jsonObjectl = new JSONObject(resultl).getJSONObject("data");
+            JSONArray jsonArrayl = jsonObjectl.getJSONArray("match");
+            ListView lstLive = app.findViewById(R.id.lstLiveGames);
+
+            if (jsonArrayl.length() == 0) {
+                lstLive.setVisibility(View.GONE);
+            } else {
+                List<Game> liveGames = new ArrayList<>();
+                String[] liveHomeNames = new String[jsonArrayl.length()];
+                for(int i = 0; i < jsonArrayl.length(); i++) {
+                    JSONObject object = jsonArrayl.getJSONObject(i);
+                    Game game = new Game(object.optInt("id"));
+                    game.setLive(false);
+                    game.setScore(object.optString("score"));
+                    game.setLocation(object.optString("location"));
+                    game.setHt_score(object.optString("ht_score"));
+                    game.setEvents(object.optString("events"));
+                    game.setCompetition_id(object.optInt("competition_id"));
+                    game.setHome_name(object.optString("home_name"));
+                    game.setAway_name(object.optString("away_name"));
+                    game.setStatus(object.optString("status"));
+                    liveGames.add(game);
+                    liveHomeNames[i] = object.optString("home_name");
+                }
+                LiveGameAdapter liveGameAdapter = new LiveGameAdapter(app,liveGames,liveHomeNames,app);
+                lstLive.setAdapter(liveGameAdapter);
+
+
+            }
+            lv.setAdapter(adapter);
             srl.setRefreshing(false);
         } catch (Exception ex) {
-            Log.d("Threadgames", "ERROR: " + ex.getMessage());
+            Log.d("Threadlivegames", "ERROR: " + ex.getMessage());
         }
     }
     private boolean isLastDate(int year,int month, int day) {
@@ -164,51 +207,5 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             else return false;
         }
     }
-    private Bundle jsonToBundle(JSONObject jsonObject){
-        try {
-            Bundle bundle = new Bundle();
-            bundle.putString("home_formation", jsonObject.getString("match_hometeam_system"));
-            bundle.putString("away_formation", jsonObject.getString("match_awayteam_system"));
-            JSONArray scores = jsonObject.optJSONArray("goalscorer");
-            int l = scores.length();
-            String[] goal_times = new String[l];
-            String[] homeoraways = new String[l];
-            String[] scorers = new String[l];
-            for(int i = 0; i < l;i++){
-                goal_times[i] = scores.getJSONObject(i).optString("time");
-                if(scores.getJSONObject(i).optString("home_scorer").length() > 1) {
-                    homeoraways[i] = "home";
-                    scorers[i] = scores.getJSONObject(i).optString("home_scorer");
-                } else {
-                    homeoraways[i] = "away";
-                    scorers[i] = scores.getJSONObject(i).optString("away_scorer");
-                }
 
-            }
-            bundle.putStringArray("goal_times",goal_times);
-            bundle.putStringArray("homeoraways",homeoraways);
-            bundle.putStringArray("scorers",scorers);
-            JSONArray array = jsonObject.getJSONArray("statistics");
-            int len = array.length();
-            for(int i = 0; i < len; i++) {
-                JSONObject obj = array.getJSONObject(i);
-                Log.d("Thradgames","Iterating through the statictics json array");
-                bundle.putInt("home_" + obj.optString("type"),obj.optInt("home"));
-                bundle.putInt("away_" + obj.optString("type"),obj.optInt("away"));
-
-            }
-            bundle.putString("match_date",jsonObject.getString("match_date"));
-            bundle.putString("match_status",jsonObject.getString("match_status"));
-            bundle.putString("match_time", jsonObject.getString("match_time"));
-            bundle.putString("home_name",jsonObject.getString("match_hometeam_name"));
-            bundle.putString("away_name",jsonObject.getString("match_awayteam_name"));
-            bundle.putString("home_score",jsonObject.getString("match_hometeam_score"));
-            bundle.putString("away_score",jsonObject.getString("match_awayteam_score"));
-            bundle.putString("isLive", jsonObject.getString("match_live"));
-            return bundle;
-        } catch (Exception ex) {
-            Log.d("Threadga", "Error in json2Bundle: " + ex.toString());
-        }
-        return null;
-    }
 }
