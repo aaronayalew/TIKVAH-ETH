@@ -1,5 +1,7 @@
 package com.goldengear.tikvah;
 
+import android.util.Log;
+
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,21 +10,22 @@ import java.util.TimeZone;
 public class Game {
     //TODO: Finish the model
     public int id;
-    int league_id;
-    int competition_id;
-    int home_id;
-    int away_id;
-    String date;
-    String time;
-    String round;
-    String home_name;
-    String away_name;
-    String location;
-    public String score;
-    public String ht_score;
-    public String events;
-    public String status;
-    public String match_time;
+    private int league_id;
+    private int competition_id;
+    private int home_id;
+    private int away_id;
+    private String date;
+    private String time;
+    private String round;
+    private String home_name;
+    private String away_name;
+    private String location;
+    private String score;
+    private String ht_score;
+    private String events;
+    private String status;
+    private String match_time;
+    private boolean live;
 
     public String getMatch_time() {
         return match_time;
@@ -35,7 +38,6 @@ public class Game {
     public Game(int id) {
         this.id = id;
     }
-    boolean live;
 
     public boolean isLive() {
         return live;
@@ -137,11 +139,13 @@ public class Game {
                 sdfinal.setTimeZone(TimeZone.getTimeZone("Africa/Addis_Ababa"));
                 return sdfinal.format(parsed);
             } catch (Exception ex) {
+                Log.d("GameTime", "error: " + ex.toString());
                 return null;
 
             }
         } else {
-            return time.substring(0,1) + "'";
+            Log.d("GameTime", "Time = " + time);
+            return time;
         }
     }
 

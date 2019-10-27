@@ -5,6 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
@@ -161,7 +164,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             });*/
             JSONObject jsonObjectl = new JSONObject(resultl).getJSONObject("data");
             JSONArray jsonArrayl = jsonObjectl.getJSONArray("match");
-            ListView lstLive = app.findViewById(R.id.lstLiveGames);
+            RecyclerView lstLive = app.findViewById(R.id.lstLiveGames);
 
             if (jsonArrayl.length() == 0) {
                 lstLive.setVisibility(View.GONE);
@@ -171,7 +174,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 for(int i = 0; i < jsonArrayl.length(); i++) {
                     JSONObject object = jsonArrayl.getJSONObject(i);
                     Game game = new Game(object.optInt("id"));
-                    game.setLive(false);
+                    game.setLive(true);
                     game.setScore(object.optString("score"));
                     game.setLocation(object.optString("location"));
                     game.setHt_score(object.optString("ht_score"));
@@ -180,10 +183,13 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                     game.setHome_name(object.optString("home_name"));
                     game.setAway_name(object.optString("away_name"));
                     game.setStatus(object.optString("status"));
+                    game.setTime(object.optString("time"));
                     liveGames.add(game);
                     liveHomeNames[i] = object.optString("home_name");
                 }
-                LiveGameAdapter liveGameAdapter = new LiveGameAdapter(app,liveGames,liveHomeNames,app);
+                LiveGameAdapter liveGameAdapter = new LiveGameAdapter(liveGames,app);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(app.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+                lstLive.setLayoutManager(layoutManager);
                 lstLive.setAdapter(liveGameAdapter);
 
 

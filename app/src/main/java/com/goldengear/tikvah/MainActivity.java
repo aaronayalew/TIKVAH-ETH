@@ -205,9 +205,10 @@ public class MainActivity extends AppCompatActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+/*
         mAdView.loadAd(adRequest);
+*/
         if(currentFragment == null) {
             FragmentTransaction ft = fragmentManager.beginTransaction();
             navigation.setSelectedItemId(R.id.nav_home);
@@ -230,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
 
                         // Log and toast
                         Log.d("FCM", "Token is: " + token);
-                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

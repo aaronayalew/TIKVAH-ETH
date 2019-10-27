@@ -11,29 +11,72 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class LiveGameAdapter extends ArrayAdapter {
+public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHolder> {
     List<Game> games;
     Activity app;
-    LiveGameAdapter(@NonNull Context context, List<Game> games, String[] homenames, Activity app) {
-        super(context, R.layout.game, R.id.txtHomeName,homenames);
+    LiveGameAdapter(List<Game> games, Activity app) {
+        super();
         this.games = games;
         this.app = app;
+
     }
-    static class  ViewHolder {
-        TextView time, stat, hname, aname, hscore, ascore;
-        ImageView hEmblem, aEmblem;
-    }
+
     @NonNull
     @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.game,parent,false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Game game = games.get(position);
+        holder.time.setText(game.getTime());
+        holder.hname.setText(game.getHome_name().replace("&amp;", "&"));
+        holder.aname.setText(game.getAway_name().replace("&amp;", "&"));
+        holder.hscore.setText(game.getScore().substring(0,1));
+        holder.ascore.setText(game.getScore().substring(4));
+        final String hImage = game.getHome_name().replace("&amp;", "&") + ".png";
+        final String aImage = game.getAway_name().replace("&amp;", "&") + ".png";
+        TikConst tc = new TikConst();
+        Picasso.with(app).setLoggingEnabled(true);
+        Picasso.with(app.getApplicationContext()).load(tc.getURL() + "img/teams/" + hImage).into(holder.hEmblem);
+        Picasso.with(app.getApplicationContext()).load(tc.getURL() + "img/teams/" + aImage).into(holder.aEmblem);
+    }
+
+    @Override
+    public int getItemCount() {
+        return games.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView time, stat, hname, aname, hscore, ascore;
+        ImageView hEmblem, aEmblem;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            time = itemView.findViewById(R.id.txtMatchTime);
+            hname = itemView.findViewById(R.id.txtHomeName);
+            aname = itemView.findViewById(R.id.txtAwayName);
+            hscore = itemView.findViewById(R.id.txtMatchHomeScore);
+            ascore = itemView.findViewById(R.id.txtAwayScore);
+            hEmblem = itemView.findViewById(R.id.ivHome);
+            aEmblem = itemView.findViewById(R.id.ivAway);
+        }
+    }
+
+    /*@Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = app.getLayoutInflater();
         if (convertView == null || convertView.getTag() == null) {
-            GamesAdapter.ViewHolder holder = new GamesAdapter.ViewHolder();
+            ViewHolder holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.game, parent, false);
             holder.time = convertView.findViewById(R.id.txtMatchTime);
             holder.hname = convertView.findViewById(R.id.txtHomeName);
@@ -49,8 +92,8 @@ public class LiveGameAdapter extends ArrayAdapter {
         holder.time.setText(game.getTime());
         holder.hname.setText(game.getHome_name().replace("&amp;", "&"));
         holder.aname.setText(game.getAway_name().replace("&amp;", "&"));
-        holder.hscore.setText(game.getScore().charAt(0));
-        holder.ascore.setText(game.getScore().charAt(4));
+        holder.hscore.setText(game.getScore().substring(0,1));
+        holder.ascore.setText(game.getScore().substring(3,4));
         final String hImage = game.getHome_name().replace("&amp;", "&") + ".png";
         final String aImage = game.getAway_name().replace("&amp;", "&") + ".png";
         TikConst tc = new TikConst();
@@ -59,5 +102,5 @@ public class LiveGameAdapter extends ArrayAdapter {
         Picasso.with(app.getApplicationContext()).load(tc.getURL() + "img/teams/" + aImage).into(holder.aEmblem);
         //TODO: Use Picasso for all adapters.
         return convertView;
-    }
+    }*/
 }
