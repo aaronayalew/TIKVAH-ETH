@@ -16,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:background="#dfdfdf"
         android:orientation="vertical"
-        android:layout_marginBottom="25dp">
+        >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,7 +29,10 @@
             android:layout_height="wrap_content"
             android:background="#fff" />
     </LinearLayout>
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="#2d7e9b"/>
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/srlGames"
         android:layout_width="match_parent"

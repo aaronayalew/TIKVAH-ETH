@@ -44,7 +44,7 @@ public class GamesAdapter extends ArrayAdapter {
     }
     static class  ViewHolder {
         TextView time, stat, hname, aname, hscore, ascore;
-        ImageView hEmblem, aEmblem;
+        ImageView hEmblem, aEmblem, isLive;
     }
     @NonNull
     @Override
@@ -60,10 +60,12 @@ public class GamesAdapter extends ArrayAdapter {
             holder.ascore = convertView.findViewById(R.id.txtAwayScore);
             holder.hEmblem = convertView.findViewById(R.id.ivHome);
             holder.aEmblem = convertView.findViewById(R.id.ivAway);
+            holder.isLive = convertView.findViewById(R.id.ivLive);
             convertView.setTag(holder);
         }
         final ViewHolder holder = (ViewHolder) convertView.getTag();
         Game game = games.get(position);
+        holder.isLive.setVisibility(View.GONE);
         holder.time.setText(game.getTime());
         holder.hname.setText(game.getHome_name().replace("&amp;", "&"));
         holder.aname.setText(game.getAway_name().replace("&amp;", "&"));

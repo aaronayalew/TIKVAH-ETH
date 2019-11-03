@@ -1,16 +1,16 @@
 package com.goldengear.tikvah;
 
+import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
@@ -43,6 +43,10 @@ public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHo
         holder.aname.setText(game.getAway_name().replace("&amp;", "&"));
         holder.hscore.setText(game.getScore().substring(0,1));
         holder.ascore.setText(game.getScore().substring(4));
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        app.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int finWid = displayMetrics.widthPixels - 80;
+        holder.frmParent.setLayoutParams(new FrameLayout.LayoutParams(finWid, ViewGroup.LayoutParams.WRAP_CONTENT));
         final String hImage = game.getHome_name().replace("&amp;", "&") + ".png";
         final String aImage = game.getAway_name().replace("&amp;", "&") + ".png";
         TikConst tc = new TikConst();
@@ -59,6 +63,7 @@ public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView time, stat, hname, aname, hscore, ascore;
         ImageView hEmblem, aEmblem;
+        FrameLayout frmParent;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +74,7 @@ public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHo
             ascore = itemView.findViewById(R.id.txtAwayScore);
             hEmblem = itemView.findViewById(R.id.ivHome);
             aEmblem = itemView.findViewById(R.id.ivAway);
+            frmParent = itemView.findViewById(R.id.itemParent);
         }
     }
 
