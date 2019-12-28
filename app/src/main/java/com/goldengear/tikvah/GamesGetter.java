@@ -96,7 +96,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             }
             Log.d("Threadgames", "Done:" + sb.toString());
             result = sb.toString();
-            URL uril = new URL(new TikConst().getURL() + "/get_prem_live.php");
+           /* URL uril = new URL(new TikConst().getURL() + "/get_prem_live.php");
             Log.d("Threadlivegames", "Starting Thread");
             URLConnection connl = uril.openConnection();
             Log.d("Threadlivegames", "Opened Connection");
@@ -110,7 +110,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 sbl.append(linel);
             }
             resultl = sbl.toString();
-            Log.d("Threadlivegames", "Result = " + resultl);
+            Log.d("Threadlivegames", "Result = " + resultl);*/
             return null;
         } catch (Exception ex){
             Log.d("Threadlivegames", "Error: " + ex.toString());
@@ -129,7 +129,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             int l = jsonArray.length();
             String[] homenames = new String[l];
             Log.d("Threadga","JSONArray length = " + jsonArray.length());
-            List<Game> games = new ArrayList<Game>();
+            final List<Game> games = new ArrayList<Game>();
             try {
                 for(int i = 0; i < l; i++) {
                     JSONObject object = jsonArray.getJSONObject(i);
@@ -162,7 +162,15 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                     ctx.startActivity(intent);
                 }
             });*/
-            JSONObject jsonObjectl = new JSONObject(resultl).getJSONObject("data");
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(ctx,GameInfo.class);
+                i.putExtra("Game", games.get(position));
+                ctx.startActivity(i);
+            }
+        });
+            /*JSONObject jsonObjectl = new JSONObject(resultl).getJSONObject("data");
             JSONArray jsonArrayl = jsonObjectl.getJSONArray("match");
             RecyclerView lstLive = app.findViewById(R.id.lstLiveGames);
 
@@ -190,10 +198,10 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 LiveGameAdapter liveGameAdapter = new LiveGameAdapter(liveGames,app);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(app.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
                 lstLive.setLayoutManager(layoutManager);
-                lstLive.setAdapter(liveGameAdapter);
+                lstLive.setAdapter(liveGameAdapter);*/
 
 
-            }
+
             lv.setAdapter(adapter);
             srl.setRefreshing(false);
         } catch (Exception ex) {

@@ -2,12 +2,13 @@ package com.goldengear.tikvah;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class Game {
+public class Game implements Serializable {
     //TODO: Finish the model
     public int id;
     private int league_id;

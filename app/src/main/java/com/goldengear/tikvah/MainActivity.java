@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -228,8 +229,6 @@ public class MainActivity extends AppCompatActivity {
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-
-                        // Log and toast
                         Log.d("FCM", "Token is: " + token);
                     }
                 });
@@ -254,7 +253,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(a);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
 
+    }
 }
 
 

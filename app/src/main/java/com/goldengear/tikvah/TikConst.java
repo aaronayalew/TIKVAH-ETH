@@ -5,7 +5,7 @@ package com.goldengear.tikvah;
  */
 
 public class TikConst {
-    public String URL = "http://10.0.2.2/tikvah/";
+    public String URL = "http://192.168.1.3/tikvah/";
 
     public String getURL() {
         return URL;

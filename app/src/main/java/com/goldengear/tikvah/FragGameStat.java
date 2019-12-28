@@ -42,42 +42,34 @@ public class FragGameStat extends Fragment {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.frag_game_stat, container, false);
         Bundle extras = getArguments();
+        Game g = (Game) extras.getSerializable("Game");
         TextView stat,score,hname,aname,hgoals,agoals,apos,hpos,ashots,hshots,hshotsot,ashotsot,hcorners,acorners,hoffsides,aoffsides,hfouls,afouls,hyellow,ayellow,hgoalkicks,agoalkicks,htreats,atreats;
         stat = (TextView) result.findViewById(R.id.txtMatchStat);
-        stat.setText(extras.getString("match_stat"));
+        stat.setText(g.getStatus());
         score = (TextView) result.findViewById(R.id.txtMatchScore);
-        score.setText(extras.getString("home_score") + " - " + extras.getString("away_score"));
+        score.setText(g.getScore());
         hname = (TextView) result.findViewById(R.id.txtmatchHName);
-        String home = extras.getString("home_name");
-        String away = extras.getString("away_name");
+        String home = g.getHome_name();
+        String away = g.getAway_name();
 
         hname.setText(home.replace("&amp;", "&"));
         aname = (TextView) result.findViewById(R.id.txtMatchAName);
         aname.setText(away.replace("&amp;", "&"));
         hgoals = (TextView) result.findViewById(R.id.txtHomeGoals);
-        //TODO: Finish this up bruh!
         agoals = (TextView) result.findViewById(R.id.txtAwayGoals);
         StringBuilder sbh = new StringBuilder();
         StringBuilder sba = new StringBuilder();
         String[] goal_times = extras.getStringArray("goal_times");
         String[] homeoraways = extras.getStringArray("homeoraways");
         String[] scorers = extras.getStringArray("scorers");
-        int len = goal_times.length;
-        for(int i = 0;i <len;i++) {
-            if(homeoraways[i].contains("home")) {
-                sbh.append(goal_times[i] + " - " + scorers[i] + "\n");
-            } else {
-                sba.append(scorers[i] + " - " + goal_times[i] + "\n");
-            }
-        }
-        hgoals.setText(sbh.toString());
-        agoals.setText(sba.toString());
+        /*hgoals.setText(sbh.toString());
+        agoals.setText(sba.toString());*/
         hpos = (TextView) result.findViewById(R.id.txtHomePos);
         apos = (TextView) result.findViewById(R.id.txtAwayPos);
         hshots = (TextView) result.findViewById(R.id.txtHomeShots);
         try {
-            hpos.setText(String.valueOf(extras.getInt("home_possession (%)")) + "%");
-            apos.setText(String.valueOf(extras.getInt("away_possession (%)")) + "%");
+
+
         } catch (Exception ex) {
 
         }
@@ -108,7 +100,7 @@ public class FragGameStat extends Fragment {
         } catch (NumberFormatException ex) {
             ashotsOFFT = 0;
         }
-        ashots.setText(String.valueOf(ashotsOT + ashotsOFFT));
+        /*ashots.setText(String.valueOf(ashotsOT + ashotsOFFT));*/
         hshotsot = (TextView) result.findViewById(R.id.txtHomeShotsOT);
         ashotsot = (TextView) result.findViewById(R.id.txtAwayShotsOT);
         hcorners = (TextView) result.findViewById(R.id.txtHomeCorners);
@@ -157,9 +149,9 @@ public class FragGameStat extends Fragment {
         ImageView imgHome = result.findViewById(R.id.imgHome);
         ImageView imgAway = result.findViewById(R.id.imgAway);
         DWImage downloader = new DWImage(imgHome,getContext());
-        downloader.execute("http://tikvah.xyz/img/teams/", home + ".png");
+        downloader.execute(new TikConst().getURL() + "img/teams/", home + ".png");
         DWImage downloader2 = new DWImage(imgAway,getContext());
-        downloader2.execute("http://tikvah.xyz/img/teams/",away + ".png" );
+        downloader2.execute(new TikConst().getURL() + "img/teams/",away + ".png" );
         return result;
     }
     private class DWImage extends AsyncTask<String,Void,Bitmap> {

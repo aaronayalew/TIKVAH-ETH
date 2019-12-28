@@ -81,5 +81,6 @@ public class GamesAdapter extends ArrayAdapter {
         return convertView;
     }
 
+
 }
 

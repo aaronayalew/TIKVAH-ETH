@@ -67,7 +67,6 @@ public class StandingsGetter extends AsyncTask<String,Void,String> {
             return null;
         } catch (Exception ex){
             Log.d("Threadst", "Error: " + ex.getMessage());
-            Snackbar.make(srl,"Error while getting data",Snackbar.LENGTH_LONG);
         }
         return null;
 
