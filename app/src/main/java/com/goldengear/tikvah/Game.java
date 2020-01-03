@@ -71,7 +71,6 @@ public class Game implements Serializable {
     public void setEvents(String events) {
         this.events = events;
     }
-
     public String getStatus() {
         return status;
     }
