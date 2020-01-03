@@ -66,7 +66,7 @@ public class GamesAdapter extends ArrayAdapter {
         final ViewHolder holder = (ViewHolder) convertView.getTag();
         Game game = games.get(position);
         holder.isLive.setVisibility(View.GONE);
-        holder.time.setText(game.getTime());
+        holder.time.setText(game.getDate() + "  " + game.getTime());
         holder.hname.setText(game.getHome_name().replace("&amp;", "&"));
         holder.aname.setText(game.getAway_name().replace("&amp;", "&"));
         holder.hscore.setText("V");

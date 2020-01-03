@@ -117,11 +117,12 @@ public class Game implements Serializable {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-            Date parsed = sdf.parse(time);
+            Date parsed = sdf.parse(date);
             SimpleDateFormat sdfinal = new SimpleDateFormat("MM-dd");
             sdfinal.setTimeZone(TimeZone.getTimeZone("Africa/Addis Ababa"));
             return sdfinal.format(parsed);
         } catch(Exception ex) {
+            Log.d("ThreadGames", "DATE EXCEPTION: " + ex.toString());
             return null;
         }
     }
