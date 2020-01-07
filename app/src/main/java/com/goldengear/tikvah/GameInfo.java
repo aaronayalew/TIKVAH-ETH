@@ -97,4 +97,5 @@ public class GameInfo extends AppCompatActivity {
             return 3;
         }
     }
+
 }

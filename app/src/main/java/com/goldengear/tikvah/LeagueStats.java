@@ -25,6 +25,7 @@ public class LeagueStats extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TODO: FIX BUG(CRASHES WHEN PRESSED BACK FROM GAMEINFO ACTIVITY)
         Id = getIntent().getExtras().getInt("league_id");
         setContentView(R.layout.activity_league_stats);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -14,15 +14,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.sql.Struct;
 
 
 /**
@@ -51,19 +57,15 @@ public class FragGameStat extends Fragment {
         hname = (TextView) result.findViewById(R.id.txtmatchHName);
         String home = g.getHome_name();
         String away = g.getAway_name();
-
         hname.setText(home.replace("&amp;", "&"));
         aname = (TextView) result.findViewById(R.id.txtMatchAName);
         aname.setText(away.replace("&amp;", "&"));
-        hgoals = (TextView) result.findViewById(R.id.txtHomeGoals);
-        agoals = (TextView) result.findViewById(R.id.txtAwayGoals);
+        TextView mScore = result.findViewById(R.id.txtMatchScore);
         StringBuilder sbh = new StringBuilder();
         StringBuilder sba = new StringBuilder();
         String[] goal_times = extras.getStringArray("goal_times");
         String[] homeoraways = extras.getStringArray("homeoraways");
         String[] scorers = extras.getStringArray("scorers");
-        /*hgoals.setText(sbh.toString());
-        agoals.setText(sba.toString());*/
         hpos = (TextView) result.findViewById(R.id.txtHomePos);
         apos = (TextView) result.findViewById(R.id.txtAwayPos);
         hshots = (TextView) result.findViewById(R.id.txtHomeShots);
@@ -212,6 +214,39 @@ public class FragGameStat extends Fragment {
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
             bmimage.setImageBitmap(bitmap);
+        }
+    }
+    private class EventGetter extends AsyncTask<String,Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String result = null;
+            try{
+                String url = strings[0];
+                URLConnection conn = new URL(url).openConnection();
+                conn.setConnectTimeout(500000);
+                conn.setReadTimeout(1800000);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line = null;
+                while((line = reader.readLine()) != null){
+                    sb.append(line);
+                }
+                result = sb.toString();
+            } catch (Exception ex) {
+
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                JSONObject object = new JSONObject(s);
+
+            } catch (Exception ex) {
+
+            }
         }
     }
 

@@ -112,33 +112,11 @@
                     android:textAlignment="center"
                     android:text="Juventus FC" />
             </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp">
-
-                <TextView
-                    android:id="@+id/txtHomeGoals"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="0dp"
-                    android:layout_weight="1"
-                    android:text="Lacazette - 34'\nAubemyang - 42'\nM. Ozil - 52'\nLacazette - 76'\nBellerin - 84'" />
-
-                <TextView
-                    android:id="@+id/txtAwayGoals"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_weight="1"
-                    android:textAlignment="textEnd"
-                    android:layout_gravity="right"
-                    android:text="Mandzukic - 12" />
-            </LinearLayout>
-
+        <ListView
+            android:id="@+id/lstEvents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
         </LinearLayout>
 
         <TextView

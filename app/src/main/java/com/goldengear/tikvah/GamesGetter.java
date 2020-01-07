@@ -96,7 +96,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             }
             Log.d("Threadgames", "Done:" + sb.toString());
             result = sb.toString();
-           /* URL uril = new URL(new TikConst().getURL() + "/get_prem_live.php");
+            URL uril = new URL(new TikConst().getURL() + "/get_prem_live.php");
             Log.d("Threadlivegames", "Starting Thread");
             URLConnection connl = uril.openConnection();
             Log.d("Threadlivegames", "Opened Connection");
@@ -110,7 +110,7 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 sbl.append(linel);
             }
             resultl = sbl.toString();
-            Log.d("Threadlivegames", "Result = " + resultl);*/
+            Log.d("Threadlivegames", "Result = " + resultl);
             return null;
         } catch (Exception ex){
             Log.d("Threadlivegames", "Error: " + ex.toString());
@@ -128,10 +128,10 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
             jsonArray = jobject.getJSONArray("fixtures");
             int l = jsonArray.length();
             String[] homenames = new String[l];
-            Log.d("Threadga","JSONArray length = " + jsonArray.length());
+            Log.d("Threadga", "JSONArray length = " + jsonArray.length());
             final List<Game> games = new ArrayList<Game>();
             try {
-                for(int i = 0; i < l; i++) {
+                for (int i = 0; i < l; i++) {
                     JSONObject object = jsonArray.getJSONObject(i);
                     Game game = new Game(object.optInt("id"));
                     game.setLive(false);
@@ -152,62 +152,65 @@ public class GamesGetter extends AsyncTask<String,Void,String> {
                 Log.d("Threadgames", "Error here: " + ex.getMessage());
             }
 
-            final GamesAdapter adapter = new GamesAdapter(ctx,games,homenames,app);
-        /*    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            final GamesAdapter adapter = new GamesAdapter(ctx, games, homenames, app);
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(app.getApplicationContext(),GameInfo.class);
-                    JSONObject obj = adapter.getDetails(position);
-                    intent.putExtras(jsonToBundle(obj));
-                    ctx.startActivity(intent);
+                    Intent i = new Intent(ctx, GameInfo.class);
+                    i.putExtra("Game", games.get(position));
+                    ctx.startActivity(i);
                 }
-            });*/
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(ctx,GameInfo.class);
-                i.putExtra("Game", games.get(position));
-                ctx.startActivity(i);
+            });
+                JSONObject jsonObjectl = new JSONObject(resultl).getJSONObject("data");
+                JSONArray jsonArrayl = jsonObjectl.getJSONArray("match");
+                RecyclerView lstLive = app.findViewById(R.id.lstLiveGames);
+
+                if (jsonArrayl.length() == 0) {
+                    lstLive.setVisibility(View.GONE);
+                } else {
+                    final List<Game> liveGames = new ArrayList<>();
+                    String[] liveHomeNames = new String[jsonArrayl.length()];
+                    for (int i = 0; i < jsonArrayl.length(); i++) {
+                        JSONObject object = jsonArrayl.getJSONObject(i);
+                        Game game = new Game(object.optInt("id"));
+                        game.setLive(true);
+                        game.setScore(object.optString("score"));
+                        game.setLocation(object.optString("location"));
+                        game.setHt_score(object.optString("ht_score"));
+                        game.setEvents(object.optString("events"));
+                        game.setCompetition_id(object.optInt("competition_id"));
+                        game.setHome_name(object.optString("home_name"));
+                        game.setAway_name(object.optString("away_name"));
+                        game.setStatus(object.optString("status"));
+                        game.setTime(object.optString("time"));
+                        liveGames.add(game);
+                        liveHomeNames[i] = object.optString("home_name");
+                    }
+                    LiveGameAdapter liveGameAdapter = new LiveGameAdapter(liveGames, app);
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(app.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+                    lstLive.setLayoutManager(layoutManager);
+                    liveGameAdapter.setOnItemClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) v.getTag();
+                            int position = viewHolder.getAdapterPosition();
+                            Game selected = liveGames.get(position);
+                            Intent i = new Intent(ctx,GameInfo.class);
+                            i.putExtra("Game", selected);
+                            ctx.startActivity(i);
+                        }
+                    });
+                    lstLive.setAdapter(liveGameAdapter);
+
+
+                    lv.setAdapter(adapter);
+                    srl.setRefreshing(false);
+                }
+            } catch (Exception ex) {
+                Log.d("Threadlivegames", "ERROR: " + ex.getMessage());
             }
-        });
-            /*JSONObject jsonObjectl = new JSONObject(resultl).getJSONObject("data");
-            JSONArray jsonArrayl = jsonObjectl.getJSONArray("match");
-            RecyclerView lstLive = app.findViewById(R.id.lstLiveGames);
-
-            if (jsonArrayl.length() == 0) {
-                lstLive.setVisibility(View.GONE);
-            } else {
-                List<Game> liveGames = new ArrayList<>();
-                String[] liveHomeNames = new String[jsonArrayl.length()];
-                for(int i = 0; i < jsonArrayl.length(); i++) {
-                    JSONObject object = jsonArrayl.getJSONObject(i);
-                    Game game = new Game(object.optInt("id"));
-                    game.setLive(true);
-                    game.setScore(object.optString("score"));
-                    game.setLocation(object.optString("location"));
-                    game.setHt_score(object.optString("ht_score"));
-                    game.setEvents(object.optString("events"));
-                    game.setCompetition_id(object.optInt("competition_id"));
-                    game.setHome_name(object.optString("home_name"));
-                    game.setAway_name(object.optString("away_name"));
-                    game.setStatus(object.optString("status"));
-                    game.setTime(object.optString("time"));
-                    liveGames.add(game);
-                    liveHomeNames[i] = object.optString("home_name");
-                }
-                LiveGameAdapter liveGameAdapter = new LiveGameAdapter(liveGames,app);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(app.getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-                lstLive.setLayoutManager(layoutManager);
-                lstLive.setAdapter(liveGameAdapter);*/
-
-
-
-            lv.setAdapter(adapter);
-            srl.setRefreshing(false);
-        } catch (Exception ex) {
-            Log.d("Threadlivegames", "ERROR: " + ex.getMessage());
         }
-    }
+
     private boolean isLastDate(int year,int month, int day) {
         if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
             if(day == 31) return true;

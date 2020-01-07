@@ -20,6 +20,7 @@ import java.util.List;
 public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHolder> {
     List<Game> games;
     Activity app;
+    private View.OnClickListener onItemClickListener;
     LiveGameAdapter(List<Game> games, Activity app) {
         super();
         this.games = games;
@@ -60,7 +61,11 @@ public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHo
         return games.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public void setOnItemClickListener(View.OnClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView time, stat, hname, aname, hscore, ascore;
         ImageView hEmblem, aEmblem;
         FrameLayout frmParent;
@@ -75,6 +80,8 @@ public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHo
             hEmblem = itemView.findViewById(R.id.ivHome);
             aEmblem = itemView.findViewById(R.id.ivAway);
             frmParent = itemView.findViewById(R.id.itemParent);
+            itemView.setTag(this);
+            itemView.setOnClickListener(onItemClickListener);
         }
     }
 
