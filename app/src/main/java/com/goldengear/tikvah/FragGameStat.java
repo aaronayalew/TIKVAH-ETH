@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -29,6 +31,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.sql.Struct;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -36,7 +40,7 @@ import java.sql.Struct;
  */
 public class FragGameStat extends Fragment {
 
-
+    ListView lvEvents;
     public FragGameStat() {
         // Required empty public constructor
     }
@@ -52,6 +56,7 @@ public class FragGameStat extends Fragment {
         TextView stat,score,hname,aname,hgoals,agoals,apos,hpos,ashots,hshots,hshotsot,ashotsot,hcorners,acorners,hoffsides,aoffsides,hfouls,afouls,hyellow,ayellow,hgoalkicks,agoalkicks,htreats,atreats;
         stat = (TextView) result.findViewById(R.id.txtMatchStat);
         stat.setText(g.getStatus());
+        lvEvents = result.findViewById(R.id.lstEvents);
         score = (TextView) result.findViewById(R.id.txtMatchScore);
         score.setText(g.getScore());
         hname = (TextView) result.findViewById(R.id.txtmatchHName);
@@ -150,6 +155,8 @@ public class FragGameStat extends Fragment {
         }
         ImageView imgHome = result.findViewById(R.id.imgHome);
         ImageView imgAway = result.findViewById(R.id.imgAway);
+        EventGetter getter = new EventGetter();
+        getter.execute(g.getEvents());
         DWImage downloader = new DWImage(imgHome,getContext());
         downloader.execute(new TikConst().getURL() + "img/teams/", home + ".png");
         DWImage downloader2 = new DWImage(imgAway,getContext());
@@ -217,16 +224,16 @@ public class FragGameStat extends Fragment {
         }
     }
     private class EventGetter extends AsyncTask<String,Void, String> {
+        EventGetter() {
 
+        }
         @Override
         protected String doInBackground(String... strings) {
             String result = null;
             try{
                 String url = strings[0];
-                URLConnection conn = new URL(url).openConnection();
-                conn.setConnectTimeout(500000);
-                conn.setReadTimeout(1800000);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                InputStream is = new URL(url.replace("&amp;", "&")).openStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();
                 String line = null;
                 while((line = reader.readLine()) != null){
@@ -234,7 +241,7 @@ public class FragGameStat extends Fragment {
                 }
                 result = sb.toString();
             } catch (Exception ex) {
-
+                Log.d("ThreadEvents", ex.toString());
             }
             return result;
         }
@@ -242,10 +249,26 @@ public class FragGameStat extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             try {
-                JSONObject object = new JSONObject(s);
+                List<Event> EventsToPass = new ArrayList<Event>();
+                JSONObject object = new JSONObject(s).getJSONObject("data");
+                JSONArray events = object.getJSONArray("event");
+                int len = events.length();
+                String names[] = new String[len];
+                for(int i = 0; i < len; i++) {
+                    String player, time, event, home_away;
+                    player = events.getJSONObject(i).getString("player");
+                    time = events.getJSONObject(i).getString("time");
+                    event = events.getJSONObject(i).getString("event");
+                    home_away = events.getJSONObject(i).getString("home_away");
+                    Event event1 = new Event(event,home_away,player,time);
+                    EventsToPass.add(event1);
+                    names[i] = player;
+                }
+                EventAdapter adapter = new EventAdapter(getContext(),EventsToPass,names,getActivity());
+                lvEvents.setAdapter(adapter);
 
             } catch (Exception ex) {
-
+                Log.d("ThreadEvents", "In POST: " + ex.getMessage());
             }
         }
     }

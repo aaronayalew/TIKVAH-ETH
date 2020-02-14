@@ -29,14 +29,11 @@
             android:layout_marginRight="8dp"
             android:id = "@+id/artTime"/>
 
-        <ImageView
-            android:id="@+id/artImg"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/lstArtImg"
             android:layout_width="match_parent"
-            android:layout_height="227dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"
-
-            />
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/artTitle"

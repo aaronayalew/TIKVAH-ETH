@@ -39,7 +39,7 @@ public class EventAdapter extends ArrayAdapter {
         Event event = events.get(position);
         if(event.getHomeoraway() == "h") {
             holder.name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            holder.name.setText(event.name + "   " + event.time);
+            holder.name.setText(event.name + "   " + event.time + "'");
             switch (event.eventType) {
                 case "YELLOW_CARD" :
                     holder.eventHome.setImageResource(R.drawable.yellowcard);
@@ -59,7 +59,7 @@ public class EventAdapter extends ArrayAdapter {
             }
         } else {
             holder.name.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-            holder.name.setText(event.time + "   " + event.name);
+            holder.name.setText(event.time + "'   " + event.name);
             switch (event.eventType) {
                 case "YELLOW_CARD" :
                     holder.eventAway.setImageResource(R.drawable.yellowcard);
