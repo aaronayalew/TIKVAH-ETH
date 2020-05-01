@@ -31,14 +31,14 @@ public class FragGames extends Fragment {
 
         final int Id = getArguments().getInt("league_id");
         final SwipeRefreshLayout srl = result.findViewById(R.id.srlGames);
-        GamesGetter gamesGetter = new GamesGetter(getContext(),lv,getActivity(),srl,srl);
-        gamesGetter.execute(String.valueOf(Id));
+        GamesGetter gamesGetter = new GamesGetter("sth",getActivity().getApplicationContext());
+        gamesGetter.GetGames(String.valueOf(Id));
         //TODO: add the onClick listener and start working on GameStat
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                GamesGetter gamesGetter = new GamesGetter(getContext(),lv,getActivity(),srl,srl);
-                gamesGetter.execute(String.valueOf(Id));
+                GamesGetter gamesGetter = new GamesGetter("sth", getActivity().getApplicationContext());
+                gamesGetter.GetGames(String.valueOf(Id));
             }
         });
 

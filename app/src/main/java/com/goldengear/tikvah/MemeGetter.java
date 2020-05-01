@@ -68,7 +68,7 @@ public class MemeGetter extends AsyncTask<String,Void,String>{
                         Log.d("Thread Meme", "Done:" + sb.toString());
                     } catch (Exception ex) {
                         Log.d("ERROR Meme", ex.toString());
-                        Snackbar.make(rootView, "Couldn't Connect", Snackbar.LENGTH_INDEFINITE).setAction("Retry", new View.OnClickListener() {
+                        Snackbar.make(rootView, "Couldn't Connect", Snackbar.LENGTH_LONG).setAction("Retry", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                MemeGetter mg = new MemeGetter(ctx, category, lv, rootView, srl, app);

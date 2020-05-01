@@ -67,15 +67,6 @@ public class FragBusiness extends Fragment {
 
         JSONHelper jsonHelper = new JSONHelper(getContext(),lv,rootView,getActivity());
         jsonHelper.refreshListView(object,false,"business");
-        NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"business",lv,rootView,rootView,null,getActivity());
-        ng.execute();
-        rootView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"business",lv,rootView,rootView,null,getActivity());
-                ng.execute();
-            }
-        });
 
         lv.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override

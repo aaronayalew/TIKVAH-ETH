@@ -60,8 +60,8 @@ public class FragGameStat extends Fragment {
         score = (TextView) result.findViewById(R.id.txtMatchScore);
         score.setText(g.getScore());
         hname = (TextView) result.findViewById(R.id.txtmatchHName);
-        String home = g.getHome_name();
-        String away = g.getAway_name();
+        String home = "WAIT";
+        String away = "WAIT";
         hname.setText(home.replace("&amp;", "&"));
         aname = (TextView) result.findViewById(R.id.txtMatchAName);
         aname.setText(away.replace("&amp;", "&"));

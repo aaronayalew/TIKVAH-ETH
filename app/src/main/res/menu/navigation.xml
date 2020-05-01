@@ -16,21 +16,6 @@
         app:showAsAction="withText" />
 
     <item
-        android:id="@+id/nav_sport"
-        android:icon="@drawable/ic_sports_vec"
-        android:title="@string/title_sport"
-        app:showAsAction="withText"
-        />
-
-
-    <item
-        android:id="@+id/nav_business"
-        android:icon="@drawable/ic_business_vec"
-        android:title="@string/title_business"
-        app:showAsAction="withText"
-        />
-
-    <item
         android:id="@+id/nav_entertainment"
         android:icon="@drawable/ic_ent_vec"
         android:title="@string/title_entertainment"

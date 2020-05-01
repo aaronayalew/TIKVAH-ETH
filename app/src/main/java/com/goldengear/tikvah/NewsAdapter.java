@@ -26,32 +26,21 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Aaron Ayalew on 10/20/2018.
  */
 
 public class NewsAdapter extends ArrayAdapter {
-    String[] titles;
-    String[] descriptions;
-    String[] images;
-    String[] IDs;
-    String[] times;
-    String[] contents;
-    String []isExpandeds;
+    List<Article> articles;
     Context ctx;
     Activity app;
 
-    NewsAdapter(Context context,String[] ids, String[] tits, String[] desc, String[] imgs, String[] conts, String[] times, String[] isExps, Activity app) {
-        super(context,R.layout.article,R.id.artTitle,tits);
+    NewsAdapter(Context context, List<Article> articles,Activity app, String[] titles) {
+        super(context,R.layout.article,R.id.artTitle,titles);
         Log.d("Aaron", "NewsAdapter Initialized");
-        this.titles = tits;
-        this.descriptions = desc;
-        this.images = imgs;
-        this.IDs = ids;
-        this.contents = conts;
-        this.times = times;
-        this.isExpandeds = isExps;
+        this.articles = articles;
         this.ctx = context;
         this.app = app;
     }
@@ -77,7 +66,8 @@ public class NewsAdapter extends ArrayAdapter {
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = app.getLayoutInflater();
         Log.d("Aaron", "GetView Called");
-        if(!images[position].contains("no_image")) {
+        final Article currArticle = articles.get(position);
+        if(currArticle.getPictures().length > 0) {
             if (convertView == null || convertView.getTag().getClass() == ViewHolderNoImg.class) {
                 convertView = inflater.inflate(R.layout.article, parent, false);
                 final ViewHolder holder = new ViewHolder();
@@ -86,16 +76,16 @@ public class NewsAdapter extends ArrayAdapter {
                 holder.img = (ImageView) convertView.findViewById(R.id.artImg);
                 holder.time = (TextView) convertView.findViewById(R.id.artTime);
                 holder.expand = (ImageButton) convertView.findViewById(R.id.btnExpand);
-                if(isExpandeds[position].contains("false")) {
-                    holder.isExpanded = false;
-                } else {
+                if(currArticle.getExpanded()) {
                     holder.isExpanded = true;
+                } else {
+                    holder.isExpanded = false;
                 }
                 convertView.setTag(holder);
                 Log.d("Logger", "convertView is null");
             }
             final ViewHolder holder = (ViewHolder) convertView.getTag();
-            if (isExpandeds[position].contains("true")) {
+            if (currArticle.getExpanded()) {
                 holder.desc.setMaxLines(100);
                 Thread runn = new Thread(new Runnable() {
                     @Override
@@ -114,130 +104,34 @@ public class NewsAdapter extends ArrayAdapter {
                 });
                 runn.run();
             }
-            holder.title.setText(titles[position]);
-            holder.desc.setText(descriptions[position]);
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    int year = Integer.valueOf(times[position].substring(0, 4));
-                    Log.d("Year", String.valueOf(year));
-                    int month = Integer.valueOf(times[position].substring(5, 7));
-                    Log.d("Month", String.valueOf(month));
-                    int day = Integer.valueOf(times[position].substring(8, 10));
-                    Log.d("Day", String.valueOf(day));
-                    int hour = Integer.valueOf(times[position].substring(11, 13));
-                    Log.d("Hour", String.valueOf(hour));
-                    int min = Integer.valueOf(times[position].substring(14, 16));
-                    Log.d("Min", String.valueOf(min));
-                    int sec = Integer.valueOf(times[position].substring(17, 19));
-                    Date date = new Date(year - 1900, month - 1, day, hour, min, sec);
-                    Date today = Calendar.getInstance().getTime();
-                    String tod;
-                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                    tod = formatter.format(today);
-                    Log.d("Today", "Today is: " + tod);
-                    Log.d("Today", "Date is:" + formatter.format(date));
-                    if (date.getYear() == today.getYear() && date.getMonth() == today.getMonth() && today.getDay() == date.getDay()) {
-                        Log.d("Date", "it is today");
-                        String minStr;
-                        if(String.valueOf(min).length() == 1) {
-                            minStr = "0" + min;
-                        } else {
-                            minStr = String.valueOf(min);
-                        }
-                        String hourstr = "";
-                        String timestr = "";
-                        String amorpm = "";
-                        if (hour > 12) {
-                            amorpm = "PM";
-                            hourstr = String.valueOf(hour - 12);
-                        } else if(hour == 12) {
-                            amorpm = "PM";
-                            hourstr = String.valueOf(hour);
-                        } else if(hour == 0) {
-                            amorpm = "AM";
-                            hourstr = "12";
-                        } else if(hour < 12) {
-                            amorpm = "AM";
-                            hourstr = String.valueOf(hour);
-                        }
-                        timestr = hourstr + ":" + minStr + " " + amorpm;
-                        holder.time.setText(timestr);
-                    } else {
-                        String monthstr = "";
-                        switch (month) {
-                            case 1:
-                                monthstr = "January";
-                                break;
-                            case 2:
-                                monthstr = "February";
-                                break;
-                            case 3:
-                                monthstr = "March";
-                                break;
-                            case 4:
-                                monthstr = "April";
-                                break;
-                            case 5:
-                                monthstr = "May";
-                                break;
-                            case 6:
-                                monthstr = "June";
-                                break;
-                            case 7:
-                                monthstr = "July";
-                                break;
-                            case 8:
-                                monthstr = "August";
-                                break;
-                            case 9:
-                                monthstr = "September";
-                                break;
-                            case 10:
-                                monthstr = "October";
-                                break;
-                            case 11:
-                                monthstr = "November";
-                                break;
-                            case 12:
-                                monthstr = "December";
-                                break;
-
-                        }
-                        holder.time.setText(monthstr + " " + day + "," + " " + year);
-
-                    }
-                    Log.d("Day", String.valueOf(day));
-
-                }
-            });
-
-            thread.run();
-            if (!images[position].contains("no_image")) {
+            holder.title.setText(currArticle.getTitle());
+            holder.desc.setText(currArticle.getContent());
+            //TODO:Set Date and Time here
+            /*if (currArticle.getPictures().length > 0) {
                 File cachDir = ctx.getCacheDir();
-                if (new File(cachDir.getAbsolutePath() + "/" + images[position]).exists()) {
-                    Bitmap bm = BitmapFactory.decodeFile(cachDir.getAbsolutePath() + "/" + images[position]);
+                if (new File(cachDir.getAbsolutePath() + "/" + currArticle.getPictures()[0]).exists()) {
+                    Bitmap bm = BitmapFactory.decodeFile(cachDir.getAbsolutePath() + "/" + currArticle.getPictures()[0]);
                     holder.img.setImageBitmap(bm);
                 } else {
                     DWImage downloader = new DWImage(holder.img);
-                    downloader.execute(new TikConst().getURL() + "img/" + images[position], images[position]);
+                    downloader.execute(new TikConst().getURL() + "img/" + currArticle.getPictures()[0], currArticle.getPictures()[0]);
                 }
             } else {
                 Thread thread1 = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        holder.img.setImageDrawable(getContext().getResources().getDrawable(R.drawable.sucks));
+
                     }
                 });
                 thread1.run();
-            }
+            }*/
             holder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isExpandeds[position].contains("false")) {
+                    if (!currArticle.getExpanded()) {
                         holder.desc.setMaxLines(100);
                         holder.isExpanded = true;
-                        isExpandeds[position] = "true";
+                        currArticle.setExpanded(true);
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -248,7 +142,7 @@ public class NewsAdapter extends ArrayAdapter {
                     } else {
                         holder.desc.setMaxLines(3);
                         holder.isExpanded = false;
-                        isExpandeds[position] = "false";
+                        currArticle.setExpanded(false);
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -274,7 +168,7 @@ public class NewsAdapter extends ArrayAdapter {
                 Log.d("Logger", "convertView is null");
             }
             final ViewHolderNoImg holder = (ViewHolderNoImg) convertView.getTag();
-            if (isExpandeds[position].contains("true")) {
+            if (currArticle.getExpanded()) {
                 holder.desc.setMaxLines(100);
                 Thread runn = new Thread(new Runnable() {
                     @Override
@@ -293,114 +187,15 @@ public class NewsAdapter extends ArrayAdapter {
                 });
                 runn.run();
             }
-            holder.title.setText(titles[position]);
-            holder.desc.setText(descriptions[position]);
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        int year = Integer.valueOf(times[position].substring(0, 4));
-                        Log.d("Year", String.valueOf(year));
-                        int month = Integer.valueOf(times[position].substring(5, 7));
-                        Log.d("Month", String.valueOf(month));
-                        int day = Integer.valueOf(times[position].substring(8, 10));
-                        Log.d("Day", String.valueOf(day));
-                        int hour = Integer.valueOf(times[position].substring(11, 13));
-                        Log.d("Hour", String.valueOf(hour));
-                        int min = Integer.valueOf(times[position].substring(14, 16));
-                        Log.d("Min", String.valueOf(min));
-                        int sec = Integer.valueOf(times[position].substring(17, 19));
-                        Date date = new Date(year - 1900, month - 1, day, hour, min, sec);
-                        Date today = Calendar.getInstance().getTime();
-                        String tod;
-                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        tod = formatter.format(today);
-                        Log.d("Today", "Today is: " + tod);
-                        Log.d("Today", "Date is:" + formatter.format(date));
-                        if (date.getYear() == today.getYear() && date.getMonth() == today.getMonth() && today.getDay() == date.getDay()) {
-                            Log.d("Date", "it is today");
-                            String minStr;
-                            if (String.valueOf(min).length() == 1) {
-                                minStr = "0" + min;
-                            } else {
-                                minStr = String.valueOf(min);
-                            }
-                            String hourstr = "";
-                            String timestr = "";
-                            String amorpm = "";
-                            if (hour > 12) {
-                                amorpm = "PM";
-                                hourstr = String.valueOf(hour - 12);
-                            } else if (hour == 12) {
-                                amorpm = "PM";
-                                hourstr = String.valueOf(hour);
-                            } else if (hour == 0) {
-                                amorpm = "AM";
-                                hourstr = "12";
-                            } else if (hour < 12) {
-                                amorpm = "AM";
-                                hourstr = String.valueOf(hour);
-                            }
-                            timestr = hourstr + ":" + minStr + " " + amorpm;
-                            holder.time.setText(timestr);
-                        } else {
-                            String monthstr = "";
-                            switch (month) {
-                                case 1:
-                                    monthstr = "January";
-                                    break;
-                                case 2:
-                                    monthstr = "February";
-                                    break;
-                                case 3:
-                                    monthstr = "March";
-                                    break;
-                                case 4:
-                                    monthstr = "April";
-                                    break;
-                                case 5:
-                                    monthstr = "May";
-                                    break;
-                                case 6:
-                                    monthstr = "June";
-                                    break;
-                                case 7:
-                                    monthstr = "July";
-                                    break;
-                                case 8:
-                                    monthstr = "August";
-                                    break;
-                                case 9:
-                                    monthstr = "September";
-                                    break;
-                                case 10:
-                                    monthstr = "October";
-                                    break;
-                                case 11:
-                                    monthstr = "November";
-                                    break;
-                                case 12:
-                                    monthstr = "Dec";
-                                    break;
-
-                            }
-                            holder.time.setText(monthstr + " " + day + "," + " " + year);
-                        }
-                    } catch(Exception ex) {
-
-                    }
-
-
-                }
-            });
-            thread.run();
+            holder.title.setText(currArticle.getTitle());
+            holder.desc.setText(currArticle.getContent());
             holder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isExpandeds[position].contains("false")) {
+                    if (!currArticle.getExpanded()) {
                         holder.desc.setMaxLines(100);
                         holder.isExpanded = true;
-                        isExpandeds[position] = "true";
+                        currArticle.setExpanded(true);
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -411,7 +206,7 @@ public class NewsAdapter extends ArrayAdapter {
                     } else {
                         holder.desc.setMaxLines(3);
                         holder.isExpanded = false;
-                        isExpandeds[position] = "false";
+                        currArticle.setExpanded(false);
                         Thread changer = new Thread(new Runnable() {
                             @Override
                             public void run() {

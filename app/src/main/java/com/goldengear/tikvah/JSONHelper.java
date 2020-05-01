@@ -9,6 +9,9 @@ import android.widget.ListView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Aaron Ayalew on 10/31/2018.
  */
@@ -28,111 +31,50 @@ public class JSONHelper {
     public void refreshListView(JSONObject object, boolean newNews,String cat) {
 
         try {
-            String arrStr = object.optString("android");
-            Log.d("JSON", "arrstr = " + arrStr);
-            JSONArray arr = object.getJSONArray("android");
-            Log.d("JSON", "Opted out JSONArray");
-            int length = arr.length();
-            String[] IDs = new String[length];
-            String[] titles = new String[length];
-            String[] descriptions = new String[length];
-            String[] contents = new String[length];
-            String[] pictures = new String[length];
-            String[] times = new String[length];
-            String[] isExpandeds = new String[length];
-            Log.d("JSON", "Gotten Length" + String.valueOf(length));
-            for(int i = 0; i < length; i++) {
-                JSONObject item = arr.optJSONObject(i);
-                Log.d("JSON", "loop: " + String.valueOf(i));
-                IDs[i] = item.getString("ID");
-                titles[i] = item.getString("title");
-                descriptions[i] = item.getString("desc");
-                pictures[i] = item.getString("picture");
-                times[i] = item.getString("time");
-                isExpandeds[i] = "false";
-
+            Log.d("JSONHelper", "Parsing json...");
+            JSONArray data = object.optJSONArray("data");
+            int len = data.length();
+            String[] titles = new String[len];
+            List<Article> articles = new ArrayList(len);
+            Log.d("JSONHelper", "Array Obtained");
+            for(int i = 0; i < len; i++) {
+                Log.d("JSONHelper", "Parsing object - " + i);
+                JSONObject obj = data.getJSONObject(i);
+                int id = obj.optInt("id");
+                Article article = new Article(id);
+                article.setTitle(obj.optString("title"));
+                titles[i] = obj.optString("title");
+                article.setDatetime(obj.optString("date"));
+                article.setCategory(obj.optString("category"));
+                article.setContent(obj.optString("content"));
+                JSONArray pics = obj.optJSONArray("pictures");
+                int piclen = pics.length();
+                String[] pictures = new String[piclen];
+                for(int j = 0; j < piclen; j++){
+                    pictures[j] = pics.optString(j);
+                }
+                article.setPictures(pictures);
+                JSONArray tgs = obj.optJSONArray("tags");
+                int tagslen = tgs.length();
+                String[] tags = new String[tagslen];
+                for(int k = 0; k < tagslen; k++) {
+                    tags[k] = tgs.optString(k);
+                }
+                article.setTags(tags);
+                JSONObject prov = obj.optJSONObject("provider");
+                article.setProv_id(prov.optInt("id"));
+                article.setProv_name(prov.optString("name"));
+                article.setProv_pic(prov.optString("picture"));
+                article.setExpanded(false);
+                articles.add(article);
             }
-            NewsAdapter adapter = new NewsAdapter(ctx,IDs,titles,descriptions,pictures,contents,times,isExpandeds,app);
+            Log.d("JSONHelper", "Creating Adapter...");
+
+            NewsAdapter adapter = new NewsAdapter(ctx,articles,app,titles);
             lv.setAdapter(adapter);
-            srl.setRefreshing(false);
-            switch (cat) {
-                case "General" :
-                    app.getActionBar().setTitle("Home");
-                    break;
-                case "Business" :
-                    app.getActionBar().setTitle("Business");
-                    break;
-                case "Sport" :
-                    app.getActionBar().setTitle("Sport");
-                    break;
-                case "Entertainment" :
-                    app.getActionBar().setTitle("Entertainment");
-                    break;
-                default :
-                    app.getActionBar().setTitle("Tikvah-ETH");
-                    break;
-            }
+            Log.d("JSONHelper", "Adapter created and set");
         } catch (Exception ex) {
-            Log.d("JSON",ex.toString());
-            srl.setRefreshing(false);
-        }
-
-    }
-    public void refreshListView(String s, boolean newNews,String cat) {
-        helper= new DBHelper(ctx,"newsDB");
-        try {
-            JSONObject object = new JSONObject(s);
-            String arrStr = object.optString("android");
-            Log.d("JSON", "arrstr = " + arrStr);
-            JSONArray arr = object.getJSONArray("android");
-            Log.d("JSON", "Opted out JSONArray");
-            int length = arr.length();
-            String[] IDs = new String[length];
-            String[] titles = new String[length];
-            String[] descriptions = new String[length];
-            String[] contents = new String[length];
-            String[] pictures = new String[length];
-            String[] times = new String[length];
-            String[] isExpandeds = new String[length];
-            String[] categories = new String[length];
-            Log.d("JSON", "Gotten Length" + String.valueOf(length));
-            for(int i = 0; i < length; i++) {
-                JSONObject item = arr.optJSONObject(i);
-                Log.d("JSON", "loop: " + String.valueOf(i));
-                IDs[i] = item.getString("ID");
-                titles[i] = item.getString("title");
-                contents[i] = item.getString("content");
-                descriptions[i] = item.getString("desc");
-                pictures[i] = item.getString("picture");
-                times[i] = item.getString("time");
-                isExpandeds[i] = "false";
-                categories[i] = cat;
-
-
-            }
-            helper.insertNews(IDs,titles,descriptions,pictures,times,categories);
-            NewsAdapter adapter = new NewsAdapter(ctx,IDs,titles,descriptions,pictures,contents,times,isExpandeds,app);
-            lv.setAdapter(adapter);
-            srl.setRefreshing(false);
-            switch (cat) {
-                case "General" :
-                    app.getActionBar().setTitle("Home");
-                    break;
-                case "Business" :
-                    app.getActionBar().setTitle("Business");
-                    break;
-                case "Sport" :
-                    app.getActionBar().setTitle("Sport");
-                    break;
-                case "Entertainment" :
-                    app.getActionBar().setTitle("Entertainment");
-                    break;
-                default :
-                    app.getActionBar().setTitle("Tikvah-ETH");
-                    break;
-            }
-        } catch (Exception ex) {
-            Log.d("JSON",ex.toString());
+            Log.d("JSON",ex.toString() + "in JSONHelper.java");
             srl.setRefreshing(false);
         }
 

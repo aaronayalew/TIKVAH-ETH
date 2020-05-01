@@ -61,14 +61,14 @@ public class FragHome extends Fragment {
             JSONHelper jsonHelper = new JSONHelper(getContext(),lv,srl,getActivity());
             jsonHelper.refreshListView(jsonObject,false,"general");
         }
-        NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,pb,getActivity());
-        ng.execute();
+        NewsGetter ng = new NewsGetter("general",getActivity().getApplicationContext(),lv,srl,getActivity());
+        ng.GetNews("general");
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 pb.setVisibility(View.VISIBLE);
-                NewsGetter ng = new NewsGetter(getContext(),"general",lv,srl,srl,pb,getActivity());
-                ng.execute();
+                NewsGetter ng = new NewsGetter("general",getActivity().getApplicationContext(),lv,srl,getActivity());
+                ng.GetNews("general");
             }
         });
         return result;

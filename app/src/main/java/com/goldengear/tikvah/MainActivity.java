@@ -82,24 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     ft.setPrimaryNavigationFragment(fragment);
                     getSupportActionBar().setTitle("Home");
                     return true;
-                case R.id.nav_sport:
 
-                    Log.d("FRAGMAN", "Sport Selected");
-                    Fragment fragment2 = fragmentManager.findFragmentByTag("SPORT_FRAG");
-                    if(fragment2 == null) {
-                        Log.d("FRAGMAN", "fragment is null");
-                        fragment2 = new FragSport();
-                        ft.add(R.id.fHome,fragment2,"SPORT_FRAG");
-                        ft.attach(fragment2).commitNowAllowingStateLoss();
-
-                    } else {
-                        Log.d("FRAGMAN", "fragment is not null");
-
-                        ft.replace(R.id.fHome,fragment2).commit();
-                    }
-                    ft.setPrimaryNavigationFragment(fragment2);
-                    getSupportActionBar().setTitle("Sport");
-                    return true;
                 case R.id.nav_leagues :
                     Log.d("FRAGMAN", "Sport Selected");
                     Fragment fragment5 = fragmentManager.findFragmentByTag("LEAGUES_FRAG");
@@ -117,23 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     ft.setPrimaryNavigationFragment(fragment5);
                     getSupportActionBar().setTitle("Soccer Updates");
                     return true;
-                case R.id.nav_business:
 
-                    Log.d("FRAGMAN", "Business Selected");
-                    Fragment fragment3 = fragmentManager.findFragmentByTag("BUSINESS_FRAG");
-                    if(fragment3 == null) {
-                        Log.d("FRAGMAN", "fragment is null");
-                        fragment3 = new FragBusiness();
-                        ft.add(R.id.fHome,fragment3,"BUSINESS_FRAG");
-                        ft.attach(fragment3).commitNowAllowingStateLoss();
-
-                    } else {
-                        Log.d("FRAGMAN", "fragment is not null");
-                        ft.replace(R.id.fHome,fragment3).commitNowAllowingStateLoss();
-                    }
-                    ft.setPrimaryNavigationFragment(fragment3);
-                    getSupportActionBar().setTitle("Business");
-                    return true;
                 case R.id.nav_entertainment:
                     Log.d("FRAGMAN", "Entertainment Selected");
                     Fragment fragment4 = fragmentManager.findFragmentByTag("ENT_FRAG");

@@ -66,13 +66,13 @@ public class GamesAdapter extends ArrayAdapter {
         final ViewHolder holder = (ViewHolder) convertView.getTag();
         Game game = games.get(position);
         holder.isLive.setVisibility(View.GONE);
-        holder.time.setText(game.getDate() + "  " + game.getTime());
-        holder.hname.setText(game.getHome_name().replace("&amp;", "&"));
-        holder.aname.setText(game.getAway_name().replace("&amp;", "&"));
+        holder.time.setText(game.getDate() + "  " + "WAIT");
+        holder.hname.setText("WAIT".replace("&amp;", "&"));
+        holder.aname.setText("WAIT".replace("&amp;", "&"));
         holder.hscore.setText("V");
         holder.ascore.setText("S");
-        final String hImage = game.getHome_name().replace("&amp;", "&") + ".png";
-        final String aImage = game.getAway_name().replace("&amp;", "&") + ".png";
+        final String hImage = "WAIT".replace("&amp;", "&") + ".png";
+        final String aImage = "WAIT".replace("&amp;", "&") + ".png";
         TikConst tc = new TikConst();
         Picasso.with(app).setLoggingEnabled(true);
         Picasso.with(app.getApplicationContext()).load(tc.getURL() + "img/teams/" + hImage).into(holder.hEmblem);

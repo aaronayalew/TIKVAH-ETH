@@ -35,16 +35,16 @@ public class FragSport extends Fragment {
         DBHelper helper = new DBHelper(getContext(),"newsDB");
         JSONObject object = helper.getNews("sport",0,20);
         new JSONHelper(getContext(),lv,rootView,getActivity()).refreshListView(object,false,"sport");
-        NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"sport",lv,rootView,rootView,null,getActivity());
-        ng.execute();
+      /*  NewsGetter ng = new NewsGetter("Sport",getContext().getApplicationContext());
+        ng.GetNews("Sport");
 
         rootView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NewsGetter ng = new NewsGetter(getActivity().getApplicationContext(),"sport",lv,rootView,rootView,null,getActivity());
-                ng.execute();
+                NewsGetter ng = new NewsGetter("sport",getContext().getApplicationContext());
+                ng.GetNews("sport");
             }
-        });
+        });*/
         return result;
     }
 

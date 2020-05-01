@@ -2,6 +2,7 @@ package com.goldengear.tikvah;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.util.LruCache;
 
 import com.android.volley.Request;
@@ -46,6 +47,7 @@ public class FeedGetter {
     }
 
     public <T> void addToRequestQueue(Request<T> req) {
+        Log.d("Volley","Request Started!");
         getRequestQueue().add(req);
     }
     public ImageLoader getImageLoader() {

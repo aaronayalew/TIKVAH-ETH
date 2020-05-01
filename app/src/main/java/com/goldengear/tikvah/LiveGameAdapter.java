@@ -39,17 +39,17 @@ public class LiveGameAdapter extends RecyclerView.Adapter<LiveGameAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Game game = games.get(position);
-        holder.time.setText(game.getTime());
-        holder.hname.setText(game.getHome_name().replace("&amp;", "&"));
-        holder.aname.setText(game.getAway_name().replace("&amp;", "&"));
+        holder.time.setText("WAIT");
+        holder.hname.setText("WAIT".replace("&amp;", "&"));
+        holder.aname.setText("WAIT".replace("&amp;", "&"));
         holder.hscore.setText(game.getScore().substring(0,1));
         holder.ascore.setText(game.getScore().substring(4));
         DisplayMetrics displayMetrics = new DisplayMetrics();
         app.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int finWid = displayMetrics.widthPixels - 80;
         holder.frmParent.setLayoutParams(new FrameLayout.LayoutParams(finWid, ViewGroup.LayoutParams.WRAP_CONTENT));
-        final String hImage = game.getHome_name().replace("&amp;", "&") + ".png";
-        final String aImage = game.getAway_name().replace("&amp;", "&") + ".png";
+        final String hImage = "WAIT".replace("&amp;", "&") + ".png";
+        final String aImage = "WAIT".replace("&amp;", "&") + ".png";
         TikConst tc = new TikConst();
         Picasso.with(app).setLoggingEnabled(true);
         Picasso.with(app.getApplicationContext()).load(tc.getURL() + "img/teams/" + hImage).into(holder.hEmblem);
