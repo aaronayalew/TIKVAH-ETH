@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp"
     android:background="#c0c0c0"
     app:cardElevation="6dp"
     app:cardCornerRadius="6dp"
@@ -29,35 +30,81 @@
             android:layout_marginRight="8dp"
             android:id = "@+id/artTime"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/lstArtImg"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vpArticleImages"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp" />
+
 
         <TextView
             android:id="@+id/artTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginBottom="8dp"
             android:text="Lorem IpsumLorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum"
-            android:textAlignment="center"
-            android:textColor="#000"
+            android:textAlignment="textStart"
+            android:textColor="#333"
             android:textSize="22sp" />
 
         <TextView
             android:id="@+id/artDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit"
-            android:layout_marginLeft="8dp"
-            android:textSize="18sp"
-            android:textColor="#000"
-            android:textAlignment="textStart"
             android:layout_gravity="start"
+            android:layout_marginLeft="8dp"
+            android:ellipsize="marquee"
             android:maxLines="3"
-            android:ellipsize="marquee"/>
+            android:text="This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit This will be a short description of the news mannnnnthis will be so dope everyone will dig it this will be so lit like so fucking lit"
+            android:textAlignment="textStart"
+            android:textColor="#444"
+            android:textSize="18sp"
+            android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/profPic"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="#fff"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/sucks" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtProvTit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="Content Stream"
+                    android:textSize="20sp"
+                    android:textColor="#222"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtMemeTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="5mins Ago"
+                    android:textColor="#333"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/btnExpand"

@@ -47,7 +47,7 @@ public class NewsAdapter extends ArrayAdapter {
     static class ViewHolder {
         TextView title;
         TextView desc;
-        ImageView img;
+        ViewPager imageviewers;
         TextView time;
         ImageButton expand;
         boolean isExpanded;
@@ -67,157 +67,59 @@ public class NewsAdapter extends ArrayAdapter {
         LayoutInflater inflater = app.getLayoutInflater();
         Log.d("Aaron", "GetView Called");
         final Article currArticle = articles.get(position);
-        if(currArticle.getPictures().length > 0) {
-            if (convertView == null || convertView.getTag().getClass() == ViewHolderNoImg.class) {
-                convertView = inflater.inflate(R.layout.article, parent, false);
-                final ViewHolder holder = new ViewHolder();
-                holder.title = (TextView) convertView.findViewById(R.id.artTitle);
-                holder.desc = (TextView) convertView.findViewById(R.id.artDesc);
-                holder.img = (ImageView) convertView.findViewById(R.id.artImg);
-                holder.time = (TextView) convertView.findViewById(R.id.artTime);
-                holder.expand = (ImageButton) convertView.findViewById(R.id.btnExpand);
-                if(currArticle.getExpanded()) {
-                    holder.isExpanded = true;
-                } else {
-                    holder.isExpanded = false;
-                }
-                convertView.setTag(holder);
-                Log.d("Logger", "convertView is null");
-            }
-            final ViewHolder holder = (ViewHolder) convertView.getTag();
-            if (currArticle.getExpanded()) {
-                holder.desc.setMaxLines(100);
-                Thread runn = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.expand.setImageResource(R.drawable.collapse);
-                    }
-                });
-                runn.run();
+        if(convertView == null) {
+            convertView = inflater.inflate(R.layout.article,parent,false);
+            final ViewHolder holder = new ViewHolder();
+            holder.title = (TextView) convertView.findViewById(R.id.artTitle);
+            holder.desc = (TextView) convertView.findViewById(R.id.artDesc);
+            holder.time = (TextView) convertView.findViewById(R.id.artTime);
+            holder.expand = (ImageButton) convertView.findViewById(R.id.btnExpand);
+            holder.imageviewers = (ViewPager) convertView.findViewById(R.id.vpArticleImages);
+            if(currArticle.getExpanded()) {
+                holder.isExpanded = true;
             } else {
-                holder.desc.setMaxLines(3);
-                Thread runn = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.expand.setImageResource(R.drawable.expand);
-                    }
-                });
-                runn.run();
-            }
-            holder.title.setText(currArticle.getTitle());
-            holder.desc.setText(currArticle.getContent());
-            //TODO:Set Date and Time here
-            /*if (currArticle.getPictures().length > 0) {
-                File cachDir = ctx.getCacheDir();
-                if (new File(cachDir.getAbsolutePath() + "/" + currArticle.getPictures()[0]).exists()) {
-                    Bitmap bm = BitmapFactory.decodeFile(cachDir.getAbsolutePath() + "/" + currArticle.getPictures()[0]);
-                    holder.img.setImageBitmap(bm);
-                } else {
-                    DWImage downloader = new DWImage(holder.img);
-                    downloader.execute(new TikConst().getURL() + "img/" + currArticle.getPictures()[0], currArticle.getPictures()[0]);
-                }
-            } else {
-                Thread thread1 = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                });
-                thread1.run();
-            }*/
-            holder.expand.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (!currArticle.getExpanded()) {
-                        holder.desc.setMaxLines(100);
-                        holder.isExpanded = true;
-                        currArticle.setExpanded(true);
-                        Thread changer = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.expand.setImageResource(R.drawable.collapse);
-                            }
-                        });
-                        changer.run();
-                    } else {
-                        holder.desc.setMaxLines(3);
-                        holder.isExpanded = false;
-                        currArticle.setExpanded(false);
-                        Thread changer = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.expand.setImageResource(R.drawable.expand);
-                            }
-                        });
-                        changer.run();
-                    }
-                }
-            });
-
-            Log.d("Aaron", "Finished get View returning row");
-        } else {
-            if (convertView == null || convertView.getTag().getClass() == ViewHolder.class) {
-                convertView = inflater.inflate(R.layout.arttice_no_image, parent, false);
-                final ViewHolderNoImg holder = new ViewHolderNoImg();
-                holder.title = (TextView) convertView.findViewById(R.id.artTitleNoImg);
-                holder.desc = (TextView) convertView.findViewById(R.id.artDescNoImg);
-                holder.time = (TextView) convertView.findViewById(R.id.artTimeNoImg);
-                holder.expand = (ImageButton) convertView.findViewById(R.id.btnExpandNoImg);
                 holder.isExpanded = false;
-                convertView.setTag(holder);
-                Log.d("Logger", "convertView is null");
             }
-            final ViewHolderNoImg holder = (ViewHolderNoImg) convertView.getTag();
-            if (currArticle.getExpanded()) {
-                holder.desc.setMaxLines(100);
-                Thread runn = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.expand.setImageResource(R.drawable.collapse);
-                    }
-                });
-                runn.run();
-            } else {
-                holder.desc.setMaxLines(6);
-                Thread runn = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        holder.expand.setImageResource(R.drawable.expand);
-                    }
-                });
-                runn.run();
-            }
-            holder.title.setText(currArticle.getTitle());
-            holder.desc.setText(currArticle.getContent());
-            holder.expand.setOnClickListener(new View.OnClickListener() {
+            convertView.setTag(holder);
+            Log.d("Logger", "convertView is null");
+
+        }
+        final ViewHolder holder = (ViewHolder) convertView.getTag();
+        if (currArticle.getExpanded()) {
+            holder.desc.setVisibility(View.VISIBLE);
+            holder.expand.setImageResource(R.drawable.collapse);
+        } else {
+           holder.desc.setVisibility(View.GONE);
+           holder.expand.setImageResource(R.drawable.expand);
+        }
+        holder.title.setText(currArticle.getTitle());
+        holder.desc.setText(currArticle.getContent());
+        //TODO:Set Date and Time here
+        holder.expand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (!currArticle.getExpanded()) {
-                        holder.desc.setMaxLines(100);
+                        holder.desc.setVisibility(View.VISIBLE);
                         holder.isExpanded = true;
                         currArticle.setExpanded(true);
-                        Thread changer = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.expand.setImageResource(R.drawable.collapse);
-                            }
-                        });
-                        changer.run();
+                        holder.expand.setImageResource(R.drawable.collapse);
                     } else {
-                        holder.desc.setMaxLines(3);
+                        holder.desc.setVisibility(View.GONE);
                         holder.isExpanded = false;
                         currArticle.setExpanded(false);
-                        Thread changer = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.expand.setImageResource(R.drawable.expand);
-                            }
-                        });
-                        changer.run();
+                        holder.expand.setImageResource(R.drawable.expand);
                     }
                 }
             });
+        Log.d("Aaron", "Finished get View returning row");
+        if(currArticle.getPictures() != null){
+            ArticleImageAdapter adapter = new ArticleImageAdapter(ctx, currArticle.getPictures());
+            holder.imageviewers.setAdapter(adapter);
+            holder.imageviewers.setVisibility(View.VISIBLE);
+        } else {
+            holder.imageviewers.setVisibility(View.GONE);
         }
+
         return convertView;
 
     }

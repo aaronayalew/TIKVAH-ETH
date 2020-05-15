@@ -37,6 +37,7 @@ public class NewsGetter {
                         Log.d("Volley", "Successfull: " + response);
                         JSONHelper helper = new JSONHelper(ctx,lv,srl,app);
                         helper.refreshListView(response,true,category);
+                        srl.setRefreshing(false);
                     }
                 }, new Response.ErrorListener() {
 
